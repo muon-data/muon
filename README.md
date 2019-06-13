@@ -84,11 +84,11 @@ characters.
 A <a name="value"></a>**value** is a sequence of zero or more characters.  If
 it contains none, the space after the colon in the definition is not required.
 
-### <a name="schema"></a>Schemas
+### <a name="schema"></a>Schema
 
 A schema is a document template with all [values](#value) containing
-[types](#type).  It can either be separate or prepended to a document.  In any
-case, it must begin and end with a [line](#line) containing three colons.
+[types](#type).  It can either be separate or prepended to a document.  In
+either case, it must begin and end with a line containing three colons.
 
 ```
 :::
@@ -104,9 +104,6 @@ the_table: table
 
 If no schema is available, all values are treated as [text](#text).
 
-When parsing a document, any [definition](#definition) which does not have a
-matching line in the schema must trigger an error.
-
 For each [table](#table) in a schema, a single [definition](#definition) can
 include `default` (after the [type](#type)).  This allows the table's
 [value](#value) to replace that definition (as a shortcut).
@@ -121,7 +118,7 @@ table_x: 15
     b: a is equal to 15
 ```
 
-<br/><a name="type"></a>
+<a name="type"></a>
 A **type** in a [schema](#schema) must be one of the following:
   * [`text`](#text), `text?`, `[text]`
   * [`bool`](#bool), `bool?`, `[bool]`
@@ -135,7 +132,7 @@ their [definition](#definition) may or may not be present.
 Types `[`surrounded by square brackets`]` are [lists](#list) — they may
 contain zero or more [values](#value).
 
-<br/> <a name="text"></a>
+<a name="text"></a>
 **Text** is a sequence of zero or more characters.  Because values cannot
 contain line feeds, the only way to define text containing them is by
 **appending**.  To do this, create a definition with the key replaced by a
@@ -147,10 +144,10 @@ text: value
     : appended
 ```
 
-<br/><a name="bool"></a>
-A **bool** [value](#value) represents a *boolean*: either `true` or `false`.
+<a name="bool"></a>
+A **bool** is a *boolean*: either `true` or `false`.
 
-<br/><a name="int"></a>
+<a name="int"></a>
 An **int** is a whole number (integer) of one of these forms:
 
   * *Decimal*: sequence of digits `0`-`9` (not starting with `0`).  May have a
@@ -160,33 +157,32 @@ An **int** is a whole number (integer) of one of these forms:
   * *Hexadecimal*: `0x` followed by sequence of characters `0`-`9`, `A`-`F` or
     `a`-`f`
 
-Underscores `_` are allowed to help readability, but each underscore must be
+Underscores are allowed to improve readability, but each underscore must be
 surrounded by other digits.
 
 `4 0b1000 0o17 0x10 23 0b10_1010`
 
-<br/><a name="float"></a>
+<a name="float"></a>
 A **float** is an IEEE 754 floating point number, made up of three parts:
   1. Whole number part (same as decimal [int](#int))
   2. Fractional part (decimal point `.` followed by sequence of digits `0`-`9`)
   3. Exponent part (`e` followed by decimal [int](#int))
 
 At least one of the whole or fractional parts must be present, but the exponent
-part is not required.
+part is not required.  The rules for underscores are the same as with
+[ints](#int).
 
-The rules for underscores are the same as with [ints](#int).
+The values `inf` and `NaN` stand for *infinity* and *not a number*,
+respectively.  Either can be prefixed with a `+` or `-` sign.
 
-*Infinity* and *not-a-number* are allowed, with `inf` and `nan` respectively.
-Either can be prefixed with a `+` or `-` sign.
+`-1.5 .0195 1e-10 13.835e12 +inf`
 
-`-1.5 .0195 1e-10 13.835e12 -nan`
-
-<br/><a name="table"></a>
+<a name="table"></a>
 A **table** contains mappings from [keys](#key) to [values](#value).  Each
 subsequent [definition](#definition) with one additional [indent](#indent)
 creates a mapping for the table.
 
-<br/><a name="list"></a>
+<a name="list"></a>
 A **list** is a sequence of zero of more [values](#value) of the specified
 [type](#type).  The values are delimited by single space characters, but the
 [definition](#definition) should be omitted if the list is empty.
@@ -209,16 +205,19 @@ numbers: 2 4 6 8
 # same as numbers: 2 4 6 8 10 12 14 16
 ```
 
-For [text](#text) containing spaces, a definition using a double colon `::`
-can be used to treat the entire value as a single item in the list.
+For lists of text containing spaces or line feeds, a definition using a double
+colon `::` can be used to treat the values as a single item in the list.
 
 ```
 :::
 text_list: [text]
 :::
-text_list: first second third
-         :: fourth item
-         : fifth sixth
+text_list: first second
+         :: third item
+         : fourth fifth
+         :: sixth
+         :: item
+         : seventh
 ```
 
 To append to a table, the key must be included as normal.
