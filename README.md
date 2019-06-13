@@ -6,127 +6,52 @@ important ways:
   * *Schemas* are part of the format — not bolted on as an afterthought
   * Comments are allowed!
 
-Example document:
 ```
-# Comments begin with #
+# Example MuON document
 sample: Text can contain "quotes" and colons (:)
 the_table:
     a: 13
     b: true
-    poem: Once upon a midnight dreary, … 🌑+🌁?
+    poem: Once upon a midnight dreary, … 🌑 + 🌁?
     pi: 3.141592653589793
 ```
 
-### Structure
+### Specification
 
-**MuON** documents must be UTF-8 encoded with no 
+**MuON** documents must be UTF-8 encoded with no
 [byte-order mark](https://unicode.org/glossary/#byte_order_mark).  Since UTF-8
 does not allow
 [surrogate code points](https://unicode.org/glossary/#surrogate_code_point),
 all characters are
 [Unicode scalars](https://unicode.org/glossary/#unicode_scalar_value).
 
-A document is a sequence of [lines](#line), which must be: [blank](#blank),
-[comments](#comment), or [definitions](#definition).
-
-Collectively, the definitions compose a *tree* of [tables](#table), with a
-*root* table which represents the entire document.
-
-A [schema](#schema) is required for [type](#type) information, otherwise all
-[values](#value) are parsed as [text](#text).
-
-<br/><a name="line"></a>
-A **line** is a sequence of characters ending in a line feed (U+000A).  Every
-line feed in a document terminates a single line.
-
-<br/><a name="space"></a>
-**Space** is the space character (U+0020) only.  Other whitespace characters
-are not considered *space*: not tab, line feed, carriage return, vertical tab,
-form feed, etc.
-
-<br/><a name="blank"></a>
-A **blank** line contains either nothing or a single carriage return (U+000D).
-Carriage returns are *not* recommended.
-
-<br/><a name="comment"></a>
-A **comment** is a [line](#line) beginning with a number sign `#`.
+Every line feed (U+000A) marks the end of a <a name="line">**line**</a>.
+There are threes types: **blank**, <a name="comment">**comment**</a>, and
+**definition**.  A blank line simply contains no characters.  Comments begin
+with any number of space characters followed by a number sign:
 
 `# Example comment`
 
-Any number of [spaces](#space) may appear before a comment, but nothing else.
-
-<br/><a name="definition"></a>
-A **definition** is a [line](#line) of the form:
-  1. zero or more [indents](#indent)
-  2. [key](#key)
-  3. one or two colons `:` or `::`
-  4. one [space](#space)
-  5. [value](#value)
-
+A MuON document represents a *tree* of [tables](#table).
+A <a name="definition"></a>**definition** creates a table mapping between a
+[key](#key) and [value](#value), like so:
 ```
 key: value
-table_a:
-    key2: value2
 ```
 
-[Table](#table) mappings are created with definitions.  With no
-[indents](#indent), the mapping is for the *root* table.  With indents, the
-mapping is for the previous table with one *less* indent level.
-
-Usually a single colon should be used — double colons are only needed for
-certain [text](#text) [lists](#list).
-
-If the value contains no characters, the space after the colon is not required.
-
-<br/><a name="append"></a>
-To **append** a [value](#value) to the previous [definition](#definition), the
-[key](#key) must be replaced with a sequence of [spaces](#space) of the same
-length (including any quotes).  When the value is parsed as [text](#text), a
-line feed is inserted before it.
+With no <a name="indent">**indents**</a>, mappings are created for the *root*
+of the tree.  If a mapping defines a new table, subsequent definitions create
+mappings for that table by using an additional indent.
 
 ```
-key: value
-   : appended
+key in root: value in root
+a:
+    key in a: value in a
 ```
 
-To append a value to an earlier (before the previous) definition, the key must
-be included.
-
-```
-table_list:
-    x: false
-table_list:
-    x: true
-```
-
-<br/><a name="key"></a>
-A **key** is a sequence of one or more characters.  Sometimes it is desirable
-to use keys directly within programming languages as 
-[identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
-In that case, keys should only contain ASCII alphanumeric and underscore `_`
-characters.
-
-A key must be `"`surrounded by quotes`"` if it:
-  * begins with a [space](#space), quote mark `"` or number sign `#`
-  * contains a colon `:`
-
-A key should be quoted if it:
-  * begins with any whitespace character
-  * contains any control characters
-  * contains any homoglyphs of colon
-
-When surrounded by quotes, all `"` within the key must be escaped by doubling.
-
-`"quoted" key` ⇒ `"""quoted"" key"`
-
-<br/><a name="value"></a>
-A **value** is a sequence of zero or more characters.  Values have no
-[type](#type).
-
-<br/><a name="indent"></a>
-**Indents** are used for nesting values within [tables](#table).  Each indent
-in a document must contain the same number of [spaces](#space), typically 2-4.
-For multiple nesting levels, multiple indents are used.
+Every indent in a document must contain the same number of spaces, typically
+2 to 4.  Only space characters (U+0020) are allowed, not tabs or other
+whitespace.  For nested tables, multiple indents are used.
 
 ```
 mesa:
@@ -137,12 +62,27 @@ mesa:
       nota: Lo dejo
 ```
 
-If there are many deeply nested tables, it is recommended to include
-[comments](#comment) every 24 lines to help provide context.  These comments
-should be of the form:
+A <a name="key"></a>**key** is a sequence of one or more characters.  It must
+be `"`surrounded by quotes`"` if it:
+  * begins with a space character, quote mark or number sign
+  * contains a colon
 
-`# table_1: table_2: … table_n:`
-<br/><br/>
+When `"`quoted`"`, all quote marks must be escaped by doubling:
+
+`"quoted" key` ⇒ `"""quoted"" key"`
+
+Also, a key *should* be quoted if it:
+  * begins with any whitespace character
+  * contains any control characters
+  * contains any homoglyphs of colon
+
+It is common to use keys directly within programming languages as
+[identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
+In this case, they should only contain ASCII alphanumeric and underscore
+characters.
+
+A <a name="value"></a>**value** is a sequence of zero or more characters.  If
+it contains none, the space after the colon in the definition is not required.
 
 ### <a name="schema"></a>Schemas
 
@@ -162,12 +102,14 @@ the_table: table
 :::
 ```
 
+If no schema is available, all values are treated as [text](#text).
+
 When parsing a document, any [definition](#definition) which does not have a
 matching line in the schema must trigger an error.
 
 For each [table](#table) in a schema, a single [definition](#definition) can
 include `default` (after the [type](#type)).  This allows the table's
-[value](#value) to be replace that definition (as a shortcut).
+[value](#value) to replace that definition (as a shortcut).
 
 ```
 :::
@@ -194,8 +136,16 @@ Types `[`surrounded by square brackets`]` are [lists](#list) — they may
 contain zero or more [values](#value).
 
 <br/> <a name="text"></a>
-**Text** is a sequence of zero or more characters.  In the absence of a schema,
-all [types](#type) are text.
+**Text** is a sequence of zero or more characters.  Because values cannot
+contain line feeds, the only way to define text containing them is by
+**appending**.  To do this, create a definition with the key replaced by a
+sequence of space characters of the same length as the previous key (including
+any quotes).  A line feed will be inserted before the appended text.
+
+```
+text: value
+    : appended
+```
 
 <br/><a name="bool"></a>
 A **bool** [value](#value) represents a *boolean*: either `true` or `false`.
@@ -238,30 +188,48 @@ creates a mapping for the table.
 
 <br/><a name="list"></a>
 A **list** is a sequence of zero of more [values](#value) of the specified
-[type](#type).  The values are delimited by [spaces](#space).
+[type](#type).  The values are delimited by single space characters, but the
+[definition](#definition) should be omitted if the list is empty.
 
-The [definition](#definition) should be omitted if the list is empty.
+```
+:::
+flags: [bool]
+checks: [bool]
+:::
+flags: true false true true
+# checks list is empty
+```
 
-For [text](#text) containing spaces, a double colon `::`
-[definition](#definition) can be used to treat the entire value as a single
-item in the list.
+Like [text](#text), lists can be **appended**; all items are added to the end
+of the list.
 
-A definition [appended](#append) to a list will append all items in the
-[value](#value) to the end of the list.
+```
+numbers: 2 4 6 8
+       : 10 12 14 16
+# same as numbers: 2 4 6 8 10 12 14 16
+```
+
+For [text](#text) containing spaces, a definition using a double colon `::`
+can be used to treat the entire value as a single item in the list.
+
+```
+:::
+text_list: [text]
+:::
+text_list: first second third
+         :: fourth item
+         : fifth sixth
+```
+
+To append to a table, the key must be included as normal.
 
 ```
 :::
 table_list: [table]
     a: int
-    b: [text]
 :::
 table_list:
     a: 5
-    b:: first item
-      : second third fourth fifth
-     :: sixth item
 table_list:
     a: 10
-    b: first second third fourth fifth
-    :: sixth item
 ```
