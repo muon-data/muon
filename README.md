@@ -1,15 +1,16 @@
 ## MuON: Micro Object Notation
 
-**MuON** is a format for data interchange — like JSON — but different in
-important ways:
+**MuON** is a format for data interchange — like
+[JSON](https://en.wikipedia.org/wiki/JSON) — but different in important ways:
   * *Line-oriented* — essentially a tree of key/value pairs
-  * *Schemas* are part of the format — not bolted on as an afterthought
+  * Easy to read and write even for non-programmers
+  * *Schemas* can be defined
   * Comments are allowed!
 
 ```
 # Example MuON document
 sample: Text can contain "quotes" and colons (:)
-the_table:
+the_dict:
     a: 13
     b: true
     poem: Once upon a midnight dreary, … 🌑 + 🌁?
@@ -18,30 +19,31 @@ the_table:
 
 ### Specification
 
-**MuON** documents must be UTF-8 encoded with no
-[byte-order mark](https://unicode.org/glossary/#byte_order_mark).  Since UTF-8
-does not allow
+**MuON** documents are [UTF-8 encoded](https://en.wikipedia.org/wiki/UTF-8)
+with no [byte-order mark](https://unicode.org/glossary/#byte_order_mark).
+Since UTF-8 does not allow
 [surrogate code points](https://unicode.org/glossary/#surrogate_code_point),
 all characters are
 [Unicode scalars](https://unicode.org/glossary/#unicode_scalar_value).
 
-Every line feed (U+000A) marks the end of a <a name="line">**line**</a>.
-There are threes types: **blank**, <a name="comment">**comment**</a>, and
-**definition**.  A blank line simply contains no characters.  Comments begin
-with any number of space characters followed by a number sign:
+Each document is a *tree* of **dictionaries** (hash tables), with an implied
+**root**.
+
+Every line feed (U+000A) marks the end of a **line**.  There are three valid
+line types: *blank*, *comment* and *definition*.  A **blank** line contains no
+characters.  **Comments** begin with zero or more spaces followed by a number
+sign:
 
 `# Example comment`
 
-A MuON document represents a *tree* of [tables](#table).
-A <a name="definition"></a>**definition** creates a table mapping between a
-[key](#key) and [value](#value), like so:
+A **definition** creates a mapping between a **key** and **value**, like so:
 ```
 key: value
 ```
 
-With no <a name="indent">**indents**</a>, mappings are created for the *root*
-of the tree.  If a mapping defines a new table, subsequent definitions create
-mappings for that table by using an additional indent.
+With no **indents**, mappings are created for the root dictionary.  If a
+mapping defines a new dictionary, subsequent definitions with an additional
+indent are for that dictionary.
 
 ```
 key in root: value in root
@@ -50,8 +52,8 @@ a:
 ```
 
 Every indent in a document must contain the same number of spaces, typically
-2 to 4.  Only space characters (U+0020) are allowed, not tabs or other
-whitespace.  For nested tables, multiple indents are used.
+2 to 4.  Only spaces (U+0020) are allowed, not tabs or other whitespace.  For
+nested dictionaries, multiple indents are used.
 
 ```
 mesa:
@@ -62,39 +64,36 @@ mesa:
       nota: Lo dejo
 ```
 
-A <a name="key"></a>**key** is a sequence of one or more characters.  It must
-be `"`surrounded by quotes`"` if it:
-  * begins with a space character, quote mark or number sign
-  * contains a colon
+A **key** is a sequence of one or more characters.  It must be `"`**quoted**`"`
+if it contains a colon or begins with a space, quote mark or number sign.  When
+*quoted*, all contained quote marks must be escaped by doubling:
 
-When `"`quoted`"`, all quote marks must be escaped by doubling:
+`"skeleton" key` ⇒ `"""skeleton"" key"`
 
-`"quoted" key` ⇒ `"""quoted"" key"`
-
-Also, a key *should* be quoted if it:
-  * begins with any whitespace character
-  * contains any control characters
-  * contains any homoglyphs of colon
+Also, a key *should* be quoted if it contains any colon
+[homoglyphs](https://en.wikipedia.org/wiki/Homoglyph#Unicode_homoglyphs),
+[control characters](https://en.wikipedia.org/wiki/Unicode_control_characters)
+or begins with [whitespace](https://en.wikipedia.org/wiki/Whitespace_character).
 
 It is common to use keys directly within programming languages as
 [identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
 In this case, they should only contain ASCII alphanumeric and underscore
 characters.
 
-A <a name="value"></a>**value** is a sequence of zero or more characters.  If
-it contains none, the space after the colon in the definition is not required.
+A **value** is a sequence of characters.  If empty, the space after the colon
+in the definition is not required.
 
-### <a name="schema"></a>Schema
+### Schema
 
-A schema is a document template with all [values](#value) containing
-[types](#type).  It can either be separate or prepended to a document.  In
-either case, it must begin and end with a line containing three colons.
+A **schema** is a document template with all values containing types.  It can
+either be separate or prepended to a document.  In either case, it begins and
+ends with a line of three colons.
 
 ```
 :::
 # Sample schema
 sample: text
-the_table: table
+the_dict: dict
     a: int
     b: bool
     poem: text
@@ -102,90 +101,76 @@ the_table: table
 :::
 ```
 
-If no schema is available, all values are treated as [text](#text).
+A **type** is one of the following:
 
-For each [table](#table) in a schema, a single [definition](#definition) can
-include `default` (after the [type](#type)).  This allows the table's
-[value](#value) to replace that definition (as a shortcut).
+Basic   | Optional |   List
+------- | -------- | ---------
+`text`  | `text?`  | `[text]`
+`bool`  | `bool?`  | `[bool]`
+`int`   | `int?`   | `[int]`
+`float` | `float?` | `[float]`
+`dict`  | `dict?`  | `[dict]`
 
-```
-:::
-table_x: table
-    a: int default
-    b: text
-:::
-table_x: 15
-    b: a is equal to 15
-```
+**Optional** types (with a question mark) are not required — their definition
+may not be present.
 
-<a name="type"></a>
-A **type** in a [schema](#schema) must be one of the following:
-  * [`text`](#text), `text?`, `[text]`
-  * [`bool`](#bool), `bool?`, `[bool]`
-  * [`int`](#int), `int?`, `[int]`
-  * [`float`](#float), `float?`, `[float]`
-  * [`table`](#table), `table?`, `[table]`
-
-Types ending in a question mark `?` are <a name="optional"></a>**optional** —
-their [definition](#definition) may or may not be present.
-
-Types `[`surrounded by square brackets`]` are [lists](#list) — they may
-contain zero or more [values](#value).
-
-<a name="text"></a>
-**Text** is a sequence of zero or more characters.  Because values cannot
-contain line feeds, the only way to define text containing them is by
-**appending**.  To do this, create a definition with the key replaced by a
-sequence of space characters of the same length as the previous key (including
-any quotes).  A line feed will be inserted before the appended text.
+**Text** is a sequence of characters.  Because values cannot contain line
+feeds, the only way for text to contain them is by **appending**.  This is done
+with extra definitions using a **blank** key: spaces in a sequence of the same
+length.  A line feed will be inserted before the appended text.
 
 ```
 text: value
     : appended
 ```
 
-<a name="bool"></a>
-A **bool** is a *boolean*: either `true` or `false`.
+**Bool** is a *boolean*: either `true` or `false`.
 
-<a name="int"></a>
-An **int** is a whole number (integer) of one of these forms:
+**Int** is an *integer* (whole number) in one of four forms:
 
   * *Decimal*: sequence of digits `0`-`9` (not starting with `0`).  May have a
     sign prefix `+` or `-`
   * *Binary*: `0b` followed by sequence of digits `0` or `1`
   * *Octal*: `0o` followed by sequence of digits `0`-`7`
-  * *Hexadecimal*: `0x` followed by sequence of characters `0`-`9`, `A`-`F` or
+  * *Hexadecimal*: `0x` followed by sequence of digits `0`-`9`, `A`-`F` or
     `a`-`f`
 
-Underscores are allowed to improve readability, but each underscore must be
-surrounded by other digits.
+An underscore may be inserted between digits to improve readability.
 
 `4 0b1000 0o17 0x10 23 0b10_1010`
 
-<a name="float"></a>
-A **float** is an IEEE 754 floating point number, made up of three parts:
-  1. Whole number part (same as decimal [int](#int))
-  2. Fractional part (decimal point `.` followed by sequence of digits `0`-`9`)
-  3. Exponent part (`e` followed by decimal [int](#int))
+A **float** is a
+[floating point](https://en.wikipedia.org/wiki/IEEE_754) number, made up of
+these parts:
+  1. Whole number part (same as decimal int)
+  2. Fractional part (decimal point followed by sequence of digits `0`-`9`)
+  3. Exponent part (`e` followed by decimal int)
 
-At least one of the whole or fractional parts must be present, but the exponent
-part is not required.  The rules for underscores are the same as with
-[ints](#int).
+One or both of the whole or fractional parts must be present, but the exponent
+part is not required.  As with ints, underscores may be included.
 
 The values `inf` and `NaN` stand for *infinity* and *not a number*,
 respectively.  Either can be prefixed with a `+` or `-` sign.
 
 `-1.5 .0195 1e-10 13.835e12 +inf`
 
-<a name="table"></a>
-A **table** contains mappings from [keys](#key) to [values](#value).  Each
-subsequent [definition](#definition) with one additional [indent](#indent)
-creates a mapping for the table.
+A **dict** contains indented mappings from keys to values.  Since dictionaries
+themselves do not have *values*, a single mapping can take its place by
+appending `default` after the type.
 
-<a name="list"></a>
-A **list** is a sequence of zero of more [values](#value) of the specified
-[type](#type).  The values are delimited by single space characters, but the
-[definition](#definition) should be omitted if the list is empty.
+```
+:::
+dict_x: dict
+    a: int default
+    b: text
+:::
+dict_x: 15
+    b: a is equal to 15
+```
+
+A **list** is a type `[`enclosed in square brackets`]`.  Values are sequences
+of the contained type, separated by spaces.  Like optional types, the
+definition should be omitted if the list is empty.
 
 ```
 :::
@@ -196,8 +181,8 @@ flags: true false true true
 # checks list is empty
 ```
 
-Like [text](#text), lists can be **appended**; all items are added to the end
-of the list.
+Like text, lists can be **appended**.  All items are added to the end of the
+list.
 
 ```
 numbers: 2 4 6 8
@@ -205,8 +190,21 @@ numbers: 2 4 6 8
 # same as numbers: 2 4 6 8 10 12 14 16
 ```
 
-For lists of text containing spaces or line feeds, a definition using a double
-colon `::` can be used to treat the values as a single item in the list.
+To append to a **list of dictionaries**, the key is included as normal.
+
+```
+:::
+dict_list: [dict]
+    a: int
+:::
+dict_list:
+    a: 5
+dict_list:
+    a: 10
+```
+
+For a **list of text** containing spaces or line feeds, a double colon can be
+used to treat values as a single item in the list.
 
 ```
 :::
@@ -218,17 +216,4 @@ text_list: first second
          :: sixth
          :: item
          : seventh
-```
-
-To append to a table, the key must be included as normal.
-
-```
-:::
-table_list: [table]
-    a: int
-:::
-table_list:
-    a: 5
-table_list:
-    a: 10
 ```
