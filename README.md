@@ -1,4 +1,6 @@
-## MuON: Micro Object Notation
+## MuON v0.1.0
+
+*Micro Object Notation*
 
 **MuON** is a format for data interchange — like
 [JSON](https://en.wikipedia.org/wiki/JSON) — but different in important ways:
@@ -126,18 +128,17 @@ text: value
 
 **Bool** is a *boolean*: either `true` or `false`.
 
-**Int** is an *integer* (whole number) in one of four forms:
+**Int** is an *integer* (whole number) in one of three forms:
 
   * *Decimal*: sequence of digits `0`-`9` (not starting with `0`).  May have a
     sign prefix `+` or `-`
   * *Binary*: `0b` followed by sequence of digits `0` or `1`
-  * *Octal*: `0o` followed by sequence of digits `0`-`7`
   * *Hexadecimal*: `0x` followed by sequence of digits `0`-`9`, `A`-`F` or
     `a`-`f`
 
 An underscore may be inserted between digits to improve readability.
 
-`4 0b1000 0o17 0x10 23 0b10_1010`
+`4 0b1000 +15 0x10 23 0b10_1010`
 
 A **float** is a
 [floating point](https://en.wikipedia.org/wiki/IEEE_754) number, made up of
