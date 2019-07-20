@@ -155,31 +155,26 @@ respectively.  Either can be prefixed with a `+` or `-` sign.
 
 `-1.5 .0195 1e-10 13.835e12 +inf`
 
-A **dict** contains indented mappings from keys to values.  Since dictionaries
-themselves do not have *values*, a single mapping can take its place by
-appending `default` after the type.
+A **dict** is a *record* containing indented mappings from keys to values.
 
 ```
 :::
-dict_x: dict
-    a: int default
-    b: text
+things: dict
+    alpha: int
+    beta: text
 :::
-dict_x: 15
-    b: a is equal to 15
+things:
+    alpha: 15
+    beta: What have you
 ```
 
-Some restrictions: the root dictionary may not have default mappings, and
-`dict`, `dict?` or `[dict]` mappings cannot be default.
+Since dictionaries do not have *values* themselves, they can be used as a short
+cut for the first contained mapping.  The only restriction is that mapping must
+not have a dictionary type.
 
 ```
-:::
-# INVALID: default not allowed in root
-alpha: float default
-bag: dict
-    # INVALID: default not allowed for [dict]
-    beta: [dict] default
-:::
+things: 15
+    beta: alpha is equal to 15
 ```
 
 A **list** is a type `[`enclosed in square brackets`]`.  Values are sequences
