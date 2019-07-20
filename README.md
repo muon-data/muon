@@ -1,4 +1,4 @@
-## MuON v0.1.0
+## MuON v0.1.1
 
 *Micro Object Notation*
 
@@ -167,6 +167,19 @@ dict_x: dict
 :::
 dict_x: 15
     b: a is equal to 15
+```
+
+Some restrictions: the root dictionary may not have default mappings, and
+`dict`, `dict?` or `[dict]` mappings cannot be default.
+
+```
+:::
+# INVALID: default not allowed in root
+alpha: float default
+bag: dict
+    # INVALID: default not allowed for [dict]
+    beta: [dict] default
+:::
 ```
 
 A **list** is a type `[`enclosed in square brackets`]`.  Values are sequences
