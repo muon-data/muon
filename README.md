@@ -70,7 +70,10 @@ A **key** is a sequence of one or more characters.  It must be `"`**quoted**`"`
 if it contains a colon or begins with a space, quote mark or number sign.  When
 *quoted*, all contained quote marks must be escaped by doubling:
 
-`"skeleton" key` ⇒ `"""skeleton"" key"`
+```
+# "skeleton" key must be quoted
+"""skeleton""" key: value
+```
 
 Also, a key *should* be quoted if it contains any colon
 [homoglyphs](https://en.wikipedia.org/wiki/Homoglyph#Unicode_homoglyphs),
