@@ -138,7 +138,14 @@ text: value
 
 An underscore may be inserted between digits to improve readability.
 
-`4 0b1000 +15 0x10 23 0b10_1010`
+```
+decimal_a: 4
+binary_a: 0b1000
+hexadecimal_a: 0x0F
+decimal_b: +16
+binary_b: 0b01_0111
+hexadecimal_b: 0x2a
+```
 
 A **float** is a
 [floating point](https://en.wikipedia.org/wiki/IEEE_754) number, made up of
@@ -153,7 +160,14 @@ part is not required.  As with ints, underscores may be included.
 The values `inf` and `NaN` stand for *infinity* and *not a number*,
 respectively.  Either can be prefixed with a `+` or `-` sign.
 
-`-1.5 .0195 1e-10 13.835e12 +inf`
+```
+float0: -1.5
+float1: .0195
+float2: 1e-10
+float3: 13.835e12
+float4: +inf
+float5: 100
+```
 
 A **dict** is a *record* containing indented mappings from keys to values.
 
