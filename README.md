@@ -6,7 +6,7 @@
 [JSON](https://en.wikipedia.org/wiki/JSON) — but different in important ways:
   * *Line-oriented* — essentially a tree of key/value pairs
   * Easy to read and write even for non-programmers
-  * *Schemas* can be defined
+  * Values can be validated with schemas
   * Comments are allowed!
 
 ```
