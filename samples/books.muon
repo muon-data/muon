@@ -1,0 +1,22 @@
+:::
+book: [dict]
+  title: text
+  author: text
+  year: integer?
+  character: [dict]
+    name: text
+    location: text?
+:::
+book: Pale Fire
+  author: Vladimir Nabokov
+  year: 1962
+  character: John Shade
+    location: New Wye
+  character: Charles Kinbote
+    location: Zembla
+book: The Curious Incident of the Dog in the Night-Time
+  author: Mark Haddon
+  year: 2003
+  character: Christopher Boone
+    location: Swindon
+  character: Siobhan

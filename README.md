@@ -2,12 +2,8 @@
 
 *Micro Object Notation*
 
-**MuON** is a format for data interchange — like
-[JSON](https://en.wikipedia.org/wiki/JSON) — but different in important ways:
-  * *Line-oriented* — essentially a tree of key/value pairs
-  * Easy to read and write even for non-programmers
-  * Values can be validated with schemas
-  * Comments are allowed!
+**MuON** is a format for configuration files or text data interchange — like
+YAML, but [without the complexity](WHY.md).
 
 ```
 # Example MuON document

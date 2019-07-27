@@ -1,0 +1,24 @@
+[[book]]
+  title = "Pale Fire"
+  author = "Vladimir Nabokov"
+  year = 1962
+
+  [[character]]
+    name = "John Shade"
+    location = "New Wye"
+
+  [[character]]
+    name = "Charles Kinbote"
+    location = "Zembla"
+
+[[book]]
+  title = "The Curious Incident of the Dog in the Night-Time"
+  author = "Mark Haddon"
+  year = 2003
+
+  [[character]]
+    name = "Christopher Boone"
+    location = "Swindon"
+
+  [[character]]
+    name = "Siobhan"
