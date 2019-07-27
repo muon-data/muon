@@ -230,16 +230,18 @@ dict_list:
 ```
 
 For a **list of text** containing spaces or line feeds, a double colon can be
-used to treat values as a single item in the list.
+used to treat values as a single item in the list.  If the double colon is
+followed by a space, the item will be appended to the previous item, with a
+line feed.  Without a space, the double colon starts a new text item.
 
 ```
 :::
 text_list: [text]
 :::
 text_list: first second
-         :: third item
+         ::third item
          : fourth fifth
-         :: sixth
+         ::sixth
          :: item
          : seventh
 ```
