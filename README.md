@@ -116,13 +116,16 @@ Basic   | Optional |   List
 may not be present.
 
 **Text** is a sequence of characters.  Because values cannot contain line
-feeds, the only way for text to contain them is by **appending**.  This is done
-with extra definitions using a **blank** key: spaces in a sequence of the same
-length.  A line feed will be inserted before the appended text.
+feeds, a **text append separator** must be used to join consecutive lines.
+Instead of the usual colon followed by space `: ` after the key, `:>` is used.
+A line feed will be inserted between the text values.
+
+When appending, a **blank** key can be used instead of repeating the key.
+This is a sequence of spaces with the same length as the key.
 
 ```
 text: value
-    : appended
+    :>appended
 ```
 
 **Bool** is a *boolean*: either `true` or `false`.
@@ -212,7 +215,8 @@ numbers: 2 4 6 8
 # same as numbers: 2 4 6 8 10 12 14 16
 ```
 
-To append to a **list of dictionaries**, the key is included as normal.
+To append to a **list of dictionaries**, since the lines are not consecutive,
+the key must not be blank.
 
 ```
 :::
@@ -225,19 +229,18 @@ dict_list:
     a: 10
 ```
 
-For a **list of text** containing spaces or line feeds, a double colon can be
-used to treat values as a single item in the list.  If the double colon is
-followed by a space, the item will be appended to the previous item, with a
-line feed.  Without a space, the double colon starts a new text item.
+For a **list of text**, values are separated by spaces, just like other lists.
+If spaces are needed, a **text value separator** `:=` can be used to treat the
+entire value as a single text item.  Also, the text append separator `:>` will
+behave the same way.
 
 ```
 :::
 text_list: [text]
 :::
 text_list: first second
-         ::third item
-         : fourth fifth
-         ::sixth
-         :: item
+         :=third item
+         : fourth fifth sixth
+         :>item
          : seventh
 ```
