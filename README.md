@@ -116,9 +116,9 @@ Basic   | Optional |   List
 may not be present.
 
 **Text** is a sequence of characters.  Because values cannot contain line
-feeds, a **text append separator** must be used to join consecutive lines.
-Instead of the usual colon followed by space `: ` after the key, `:>` is used.
-A line feed will be inserted between the text values.
+feeds, if one is needed a **text append separator** can be used on the next
+line to *insert* one.  This is `:>` instead of the usual `: ` between the key
+and value.  A line feed will be inserted between the text values.
 
 When appending, a **blank** key can be used instead of repeating the key.
 This is a sequence of spaces with the same length as the key.
@@ -229,9 +229,9 @@ dict_list:
     a: 10
 ```
 
-For a **list of text**, values are separated by spaces, just like other lists.
+For a **list of text**, items are separated by spaces, just like other lists.
 If spaces are needed, a **text value separator** `:=` can be used to treat the
-entire value as a single text item.  Also, the text append separator `:>` will
+entire value as a single text item.  The text append separator `:>` will also
 behave the same way.
 
 ```
