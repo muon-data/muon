@@ -8,11 +8,11 @@ expressive as other formats, but [much simpler](WHY.md).
 ```
 # Example MuON
 sample: Text can contain "quotes" and colons (:)
-the_dict:
-    a: 13
-    b: true
-    poem: Once upon a midnight dreary, … 🌑 + 🌁?
-    pi: 3.141592653589793
+record:
+  apples: 13
+  owned: true
+  poem: Once upon a midnight dreary, … 🌑 + 🌁?
+  constant: 3.141592653589793
 ```
 
 ### Specification
@@ -43,9 +43,9 @@ mapping defines a new dictionary, subsequent definitions with an additional
 indent are for that dictionary.
 
 ```
-key in root: value in root
-a:
-    key in a: value in a
+key_in_root: value in root
+branch:
+  key_in_branch: value in branch
 ```
 
 Every indent in a file must contain the same number of spaces, typically 2 to 4.
@@ -54,10 +54,10 @@ dictionaries, multiple indents are used.
 
 ```
 mesa:
-   # 3 space indent; ok
+   # One indent; 3 spaces
    comida: taco
    bandeja:
-      # Two indents: 6 spaces
+      # Two indents; 6 spaces
       nota: Lo dejo
 ```
 
@@ -67,7 +67,7 @@ if it contains a colon or begins with a space, quote mark or number sign.  When
 
 ```
 # "skeleton" key must be quoted
-"""skeleton""" key: value
+"""skeleton"" key": value
 ```
 
 Also, a key *should* be quoted if it contains any colon
@@ -91,13 +91,13 @@ line of three colons.
 
 ```
 :::
-# Sample schema
+# Example schema
 sample: text
-the_dict: dict
-    a: int
-    b: bool
-    poem: text
-    d: float
+record: dict
+  apples: int
+  owned: bool
+  poem: text
+  constant: float
 :::
 ```
 
@@ -123,8 +123,8 @@ When appending, a **blank** key can be used instead of repeating the key.
 This is a sequence of spaces with the same length as the key.
 
 ```
-text: value
-    :>appended
+lyric: Out in the garden
+     :>There's half of a heaven
 ```
 
 **Bool** is a *boolean*: either `true` or `false`.
@@ -140,12 +140,12 @@ text: value
 An underscore may be inserted between digits to improve readability.
 
 ```
-decimal_a: 4
-binary_a: 0b1000
-hexadecimal_a: 0x0F
-decimal_b: +16
-binary_b: 0b01_0111
-hexadecimal_b: 0x2a
+a_decimal: 4
+b_binary: 0b1000
+c_hexadecimal: 0x0F
+d_decimal: +16
+e_binary: 0b01_0111
+f_hexadecimal: 0x2a
 ```
 
 A **float** is a
@@ -163,11 +163,11 @@ respectively.  Either can be prefixed with a `+` or `-` sign.
 
 ```
 float0: -1.5
-float1: .0195
-float2: 1e-10
-float3: 13.835e12
-float4: +inf
-float5: 100
+float1: .6931471805599453
+float2: 100
+float3: 6.626_070_15e-34
+float4: 6.022_140_76e23
+float5: +inf
 ```
 
 A **dict** is a *record* containing indented mappings from keys to values.
@@ -175,12 +175,12 @@ A **dict** is a *record* containing indented mappings from keys to values.
 ```
 :::
 things: dict
-    alpha: int
-    beta: text
+  alpha: int
+  beta: text
 :::
 things:
-    alpha: 15
-    beta: What have you
+  alpha: 15
+  beta: What have you
 ```
 
 Since dictionaries do not have *values* themselves, they can be used as a short
@@ -189,7 +189,7 @@ not have a dictionary type.
 
 ```
 things: 15
-    beta: alpha is equal to 15
+  beta: alpha is equal to 15
 ```
 
 A **list** is a type `[`enclosed in square brackets`]`.  Values are sequences
@@ -209,23 +209,23 @@ Like text, lists can be **appended**.  All items are added to the end of the
 list.
 
 ```
-numbers: 2 4 6 8
-       : 10 12 14 16
-# same as numbers: 2 4 6 8 10 12 14 16
+numbers: 0 1 1 2 3
+       : 5 8 13 21 34
+# same as numbers: 0 1 1 2 3 5 8 13 21 34
 ```
 
 To append to a **list of dictionaries**, since the lines are not consecutive,
 the key must not be blank.
-
 ```
 :::
-dict_list: [dict]
-    a: int
+person: [dict]
+  name: text
+  birthday: date
 :::
-dict_list:
-    a: 5
-dict_list:
-    a: 10
+person: George Washington
+  birthday: 1732-02-22
+person: Abraham Lincoln
+  birthday: 1809-02-12
 ```
 
 For a **list of text**, items are separated by spaces, just like other lists.
@@ -235,11 +235,11 @@ behave the same way.
 
 ```
 :::
-text_list: [text]
+to_do: [text]
 :::
-text_list: first second
-         :=third item
-         : fourth fifth sixth
-         :>item
-         : seventh
+to_do: first second
+     :=third item
+     : fourth fifth sixth
+     :>item
+     : seventh
 ```
