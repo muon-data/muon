@@ -70,18 +70,20 @@ if it contains a colon or begins with a space, quote mark or number sign.  When
 """skeleton"" key": value
 ```
 
-Also, a key *should* be quoted if it contains any colon
-[homoglyphs](https://en.wikipedia.org/wiki/Homoglyph#Unicode_homoglyphs),
+Also, a key *should* be quoted if it contains
+[homoglyphs](https://en.wikipedia.org/wiki/Homoglyph#Unicode_homoglyphs)
+of colon, contains
 [control characters](https://en.wikipedia.org/wiki/Unicode_control_characters)
 or begins with [whitespace](https://en.wikipedia.org/wiki/Whitespace_character).
 
 It is common to use keys directly within programming languages as
 [identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
-In this case, they should only contain ASCII alphanumeric and underscore
+In this case, they should contain only ASCII alphanumeric and underscore
 characters.
 
-A **value** is a sequence of characters.  If empty, the space after the colon
-in the definition is not required.
+A **value** is a sequence of characters.  With the exception of *line feed*, any
+unicode character is allowed.  If a value is empty, the space after the colon in
+the definition is not required.
 
 ### Schema
 
@@ -114,13 +116,13 @@ Basic   | Optional |   List
 **Optional** types (with a question mark) are not required — their definition
 may not be present.
 
-**Text** is a sequence of characters.  Because values cannot contain line
-feeds, if one is needed a **text append separator** can be used on the next
-line to *insert* one.  This is `:>` instead of the usual `: ` between the key
-and value.  A line feed will be inserted between the text values.
+**Text** is a sequence of characters.  Because values cannot contain line feeds,
+text definitions must be **appended** to represent them.  This is done with a
+**text append separator**, which is `:>` instead of the usual `: ` between the
+key and value.  A line feed will be inserted before each appended value.
 
-When appending, a **blank** key can be used instead of repeating the key.
-This is a sequence of spaces with the same length as the key.
+When appending, a **blank** key should be used — a sequence of spaces with the
+same number of characters as the key.
 
 ```
 lyric: Out in the garden
@@ -132,7 +134,7 @@ lyric: Out in the garden
 **Int** is an *integer* (whole number) in one of three forms:
 
   * *Decimal*: sequence of digits `0`-`9` (not starting with `0`).  May have a
-    sign prefix `+` or `-`
+    `+` or `-` sign prefix
   * *Binary*: `0b` followed by sequence of digits `0` or `1`
   * *Hexadecimal*: `0x` followed by sequence of digits `0`-`9`, `A`-`F` or
     `a`-`f`
@@ -151,9 +153,9 @@ f_hexadecimal: 0x2a
 A **float** is a
 [floating point](https://en.wikipedia.org/wiki/IEEE_754) number, made up of
 these parts:
-  1. Whole number part (same as decimal int)
-  2. Fractional part (decimal point followed by sequence of digits `0`-`9`)
-  3. Exponent part (`e` followed by decimal int)
+  1. *Whole number* part (same as decimal int)
+  2. *Fractional* part (decimal point followed by sequence of digits `0`-`9`)
+  3. *Exponent* part (`e` followed by decimal int)
 
 One or both of the whole or fractional parts must be present, but the exponent
 part is not required.  As with ints, underscores may be included.
@@ -183,19 +185,16 @@ things:
   beta: What have you
 ```
 
-Since dictionaries do not have *values* themselves, they can be used as a short
-cut for the first contained mapping.  The only restriction is that mapping must
-not have a dictionary type.
-
+Since dictionaries do not use the values in their definitions, those values can
+be used as a **short cut** for the first contained mapping.  (Not allowed for
+`dict` mappings).
 ```
 things: 15
   beta: alpha is equal to 15
 ```
 
-A **list** is a type `[`enclosed in square brackets`]`.  Values are sequences
-of the contained type, separated by spaces.  Like optional types, the
-definition should be omitted if the list is empty.
-
+A **list** is a sequence of *items*, separated by spaces.  If there are no
+items in a list, its definition should be omitted.
 ```
 :::
 flags: [bool]
@@ -205,7 +204,7 @@ flags: true false true true
 # checks list is empty
 ```
 
-Like text, lists can be **appended**.  All items are added to the end of the
+Like text, lists can be *appended*.  All items are added to the end of the
 list.
 
 ```
@@ -214,8 +213,8 @@ numbers: 0 1 1 2 3
 # same as numbers: 0 1 1 2 3 5 8 13 21 34
 ```
 
-To append to a **list of dictionaries**, since the lines are not consecutive,
-the key must not be blank.
+To append to a **list of dictionaries**, since the definitions are not
+consecutive, the key must not be blank.
 ```
 :::
 person: [dict]
@@ -229,9 +228,9 @@ person: Abraham Lincoln
 ```
 
 For a **list of text**, items are separated by spaces, just like other lists.
-If spaces are needed, a **text value separator** `:=` can be used to treat the
-entire value as a single text item.  The text append separator `:>` will also
-behave the same way.
+If the text contains spaces, a **text value separator** `:=` can be used to
+treat an entire value as a single item.  The text append separator `:>` will
+also behave the same way.
 
 ```
 :::
