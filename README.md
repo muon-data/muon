@@ -1,12 +1,12 @@
-## MuON v0.1.2
+## MuON v0.2.0alpha
 
 *Micro Object Notation*
 
-**MuON** is a format for configuration files or text data interchange — like
-YAML, but [without the complexity](WHY.md).
+**MuON** is a format for configuration files and data interchange — as
+expressive as other formats, but [much simpler](WHY.md).
 
 ```
-# Example MuON document
+# Example MuON
 sample: Text can contain "quotes" and colons (:)
 the_dict:
     a: 13
@@ -17,18 +17,17 @@ the_dict:
 
 ### Specification
 
-**MuON** documents are [UTF-8 encoded](https://en.wikipedia.org/wiki/UTF-8)
-with no [byte-order mark](https://unicode.org/glossary/#byte_order_mark).
-Since UTF-8 does not allow
+**MuON** files are [UTF-8 encoded](https://en.wikipedia.org/wiki/UTF-8) with no
+[byte-order mark](https://unicode.org/glossary/#byte_order_mark).  Since UTF-8
+does not allow
 [surrogate code points](https://unicode.org/glossary/#surrogate_code_point),
 all characters are
 [Unicode scalars](https://unicode.org/glossary/#unicode_scalar_value).
 
-Each document is a *tree* of **dictionaries** (hash tables), with an implied
-**root**.
+Each file is a *tree* of **dictionaries** (records), with an implied **root**.
 
-Every line feed (U+000A) marks the end of a **line**.  There are three valid
-line types: *blank*, *comment* and *definition*.  A **blank** line contains no
+Every line feed (U+000A) marks the end of a **line**.  There are three line
+types: *blank*, *comment* and *definition*.  **Blank** lines contain no
 characters.  **Comments** begin with zero or more spaces followed by a number
 sign:
 
@@ -39,7 +38,7 @@ A **definition** creates a mapping between a **key** and **value**, like so:
 key: value
 ```
 
-With no **indents**, mappings are created for the root dictionary.  If a
+With no **indents**, mappings are created for the root dictionary.  When a
 mapping defines a new dictionary, subsequent definitions with an additional
 indent are for that dictionary.
 
@@ -49,9 +48,9 @@ a:
     key in a: value in a
 ```
 
-Every indent in a document must contain the same number of spaces, typically
-2 to 4.  Only spaces (U+0020) are allowed, not tabs or other whitespace.  For
-nested dictionaries, multiple indents are used.
+Every indent in a file must contain the same number of spaces, typically 2 to 4.
+Only spaces (U+0020) are allowed, not tabs or other whitespace.  For nested
+dictionaries, multiple indents are used.
 
 ```
 mesa:
@@ -86,9 +85,9 @@ in the definition is not required.
 
 ### Schema
 
-A **schema** is a document template with all values containing types.  It can
-either be separate or prepended to a document.  In either case, it begins and
-ends with a line of three colons.
+A **schema** is a template with all values containing *types*.  It can either be
+separate or prepended to a MuON file.  In either case, it begins and ends with a
+line of three colons.
 
 ```
 :::
