@@ -1,12 +1,3 @@
-:::
-book: [dict]
-  title: text
-  author: text
-  year: integer?
-  character: [dict]
-    name: text
-    location: text?
-:::
 book: Pale Fire
   author: Vladimir Nabokov
   year: 1962

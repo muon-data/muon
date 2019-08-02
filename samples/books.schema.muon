@@ -1,0 +1,9 @@
+:::
+book: list dict
+  title: text
+  author: text
+  year: optional integer
+  character: list dict
+    name: text
+    location: optional text
+:::
