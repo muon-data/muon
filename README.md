@@ -1,4 +1,4 @@
-## MuON v0.2.0alpha
+## MuON v0.2.0beta
 
 *Micro Object Notation*
 
@@ -103,23 +103,25 @@ record: dict
 :::
 ```
 
-A **type** is one of the following:
+A **type** is one of eight values: `text`, `bool`, `int`, `float`, `datetime`,
+`date`, `time` or `dict`.  Any type may be preceded by a **modifier**, either
+`optional` or `list`.  All types except `dict` may be followed by a **default**
+value — used when the definition is not present.
 
-Basic   | Optional |   List
-------- | -------- | ---------
-`text`  | `text?`  | `[text]`
-`bool`  | `bool?`  | `[bool]`
-`int`   | `int?`   | `[int]`
-`float` | `float?` | `[float]`
-`dict`  | `dict?`  | `[dict]`
+**Text** is a sequence of characters.
+```
+:::
+greeting: text Hello!
+farewell: text Goodbye!
+:::
+# greeting is Hello!
+farewell: Be seeing you.
+```
 
-**Optional** types (with a question mark) are not required — their definition
-may not be present.
-
-**Text** is a sequence of characters.  Because values cannot contain line feeds,
-text definitions must be **appended** to represent them.  This is done with a
-**text append separator**, which is `:>` instead of the usual `: ` between the
-key and value.  A line feed will be inserted before each appended value.
+Because values cannot contain line feeds, text definitions must be **appended**
+to represent them.  This is done with a **text append** separator, which is `:>`
+instead of the usual `: ` between the key and value.  A line feed will be
+inserted before each appended value.
 
 When appending, a **blank** key should be used — a sequence of spaces with the
 same number of characters as the key.
@@ -142,12 +144,12 @@ lyric: Out in the garden
 An underscore may be inserted between digits to improve readability.
 
 ```
-a_decimal: 4
-b_binary: 0b1000
-c_hexadecimal: 0x0F
-d_decimal: +16
-e_binary: 0b01_0111
-f_hexadecimal: 0x2a
+locke: 4
+reyes: 0b1000
+ford: 0x0F
+jarrah: +16
+shephard: 0b01_0111
+kwon: 0x2a
 ```
 
 A **float** is a
@@ -172,6 +174,27 @@ float4: 6.022_140_76e23
 float5: +inf
 ```
 
+**Datetime** is *date*, *time* and *offset*, as specified by `date-time`
+from [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).  The date and
+time must be separated by an upper-case `T`.  If the offset is represented by
+`Z`, it must also be uppercase.
+```
+event: 1969-07-21T02:56:00Z
+```
+
+**Date** is *year*, *month* and *day*, as specified by `full-date` from
+[RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).
+```
+birthday: 2019-08-01
+```
+
+**Time** is *hour*, *minute* and *second*, as specified by `partial-time` from
+[RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).
+```
+start: 08:00:00
+end: 15:58:14.593849001
+```
+
 A **dict** is a *record* containing indented mappings from keys to values.
 
 ```
@@ -193,12 +216,24 @@ things: 15
   beta: alpha is equal to 15
 ```
 
+**Optional** types are not required — their definition may not be present.
+Default values are not allowed for `optional` types.
+
+```
+:::
+name: text
+occupation: optional text
+:::
+name: Surfer Joe
+# no occupation
+```
+
 A **list** is a sequence of *items*, separated by spaces.  If there are no
 items in a list, its definition should be omitted.
 ```
 :::
-flags: [bool]
-checks: [bool]
+flags: list bool
+checks: list bool
 :::
 flags: true false true true
 # checks list is empty
@@ -217,7 +252,7 @@ To append to a **list of dictionaries**, since the definitions are not
 consecutive, the key must not be blank.
 ```
 :::
-person: [dict]
+person: list dict
   name: text
   birthday: date
 :::
@@ -228,13 +263,13 @@ person: Abraham Lincoln
 ```
 
 For a **list of text**, items are separated by spaces, just like other lists.
-If the text contains spaces, a **text value separator** `:=` can be used to
+If the text contains spaces, a **text value** separator `:=` can be used to
 treat an entire value as a single item.  The text append separator `:>` will
 also behave the same way.
 
 ```
 :::
-to_do: [text]
+to_do: list text
 :::
 to_do: first second
      :=third item
