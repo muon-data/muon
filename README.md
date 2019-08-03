@@ -1,4 +1,4 @@
-## MuON v0.2.0
+## MuON v0.2.1alpha
 
 *Micro Object Notation*
 
@@ -122,7 +122,7 @@ farewell: Be seeing you.
 
 Because values cannot contain line feeds, text definitions must be **appended**
 to represent them.  This is done with a **text append** separator, which is `:>`
-instead of the usual `: ` between the key and value.  A line feed will be
+instead of the usual `: ` between the key and value.  A line feed will be
 inserted before each appended value.
 
 When appending, a **blank** key should be used — a sequence of spaces with the
