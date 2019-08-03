@@ -78,7 +78,7 @@ or begins with [whitespace](https://en.wikipedia.org/wiki/Whitespace_character).
 
 It is common to use keys directly within programming languages as
 [identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
-In this case, they should contain only ASCII alphanumeric and underscore
+In this case, they should contain only ASCII alphanumeric or underscore
 characters.
 
 A **value** is a sequence of characters.  With the exception of *line feed*, any
@@ -107,8 +107,8 @@ A **type** is one of eight values: `text`, `bool`, `int`, `float`, `datetime`,
 `date`, `time` or `dict`.  Any type may be preceded by a **modifier**, either
 `optional` or `list`.  A **default** value can follow the type — used when the
 definition is not present.  Default values are not allowed for `dict` or
-`optional` types.  Modifiers and defaults must be separated from the type with
-a single space.
+`optional` types.  Modifiers and defaults are separated from the type with a
+single space.
 
 **Text** is a sequence of characters.
 ```
@@ -197,7 +197,7 @@ start: 08:00:00
 end: 15:58:14.593849001
 ```
 
-A **dict** is a *record* containing indented mappings from keys to values.
+A **dict** is a *record* containing definitions on subsequent indented lines.
 
 ```
 :::
@@ -210,15 +210,16 @@ thing:
   beta: What have you
 ```
 
-Since dictionaries do not use the values in their definitions, those values can
-**substitute** for the first contained mapping, which must then be left out.
-(Not allowed for `dict` or `optional` mappings).
+Since dictionaries do not use the values from their definitions, those values
+can **substitute** for the first contained mapping, which must then be left out.
+Substitution is not allowed for `dict` or `optional` mappings.
 ```
 thing: 15
   beta: alpha is equal to 15
 ```
 
-**Optional** types are not required — their definition may not be present.
+**Optional** types are not required — the absence of a definition represents
+a `None` or `null` value.
 ```
 :::
 name: text
@@ -264,8 +265,8 @@ person: Abraham Lincoln
 
 For a **list of text**, items are separated by spaces, just like other lists.
 If the text contains spaces, a **text value** separator `:=` can be used to
-treat an entire value as a single item.  The text append separator `:>` will
-also behave the same way.
+treat an entire value as a single item.  The *text append* separator `:>` will
+also append the value as one item.
 
 ```
 :::
