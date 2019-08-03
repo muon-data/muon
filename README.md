@@ -105,8 +105,10 @@ record: dict
 
 A **type** is one of eight values: `text`, `bool`, `int`, `float`, `datetime`,
 `date`, `time` or `dict`.  Any type may be preceded by a **modifier**, either
-`optional` or `list`.  All types except `dict` may be followed by a **default**
-value — used when the definition is not present.
+`optional` or `list`.  A **default** value can be appended after the type —
+used when the definition is not present.  Default values are not allowed for
+`dict` or `optional` types.  Modifiers and defaults must be separated from the
+type with a single space.
 
 **Text** is a sequence of characters.
 ```
@@ -217,7 +219,6 @@ things: 15
 ```
 
 **Optional** types are not required — their definition may not be present.
-Default values are not allowed for `optional` types.
 
 ```
 :::
@@ -249,7 +250,7 @@ numbers: 0 1 1 2 3
 ```
 
 To append to a **list of dictionaries**, since the definitions are not
-consecutive, the key must not be blank.
+consecutive, the key cannot be blank.
 ```
 :::
 person: list dict
