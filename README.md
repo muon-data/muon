@@ -201,25 +201,24 @@ A **dict** is a *record* containing indented mappings from keys to values.
 
 ```
 :::
-things: dict
+thing: dict
   alpha: int
   beta: text
 :::
-things:
+thing:
   alpha: 15
   beta: What have you
 ```
 
 Since dictionaries do not use the values in their definitions, those values can
 **substitute** for the first contained mapping, which must then be left out.
-(Not allowed for `dict` mappings).
+(Not allowed for `dict` or `optional` mappings).
 ```
-things: 15
+thing: 15
   beta: alpha is equal to 15
 ```
 
 **Optional** types are not required — their definition may not be present.
-
 ```
 :::
 name: text
