@@ -1,4 +1,4 @@
-## MuON v0.2.0beta
+## MuON v0.2.0
 
 *Micro Object Notation*
 
