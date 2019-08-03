@@ -209,8 +209,8 @@ things:
 ```
 
 Since dictionaries do not use the values in their definitions, those values can
-be used as a **short cut** for the first contained mapping.  (Not allowed for
-`dict` mappings).
+**substitute** for the first contained mapping, which must then be left out.
+(Not allowed for `dict` mappings).
 ```
 things: 15
   beta: alpha is equal to 15
