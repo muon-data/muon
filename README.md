@@ -105,10 +105,10 @@ record: dict
 
 A **type** is one of eight values: `text`, `bool`, `int`, `float`, `datetime`,
 `date`, `time` or `dict`.  Any type may be preceded by a **modifier**, either
-`optional` or `list`.  A **default** value can be appended after the type —
-used when the definition is not present.  Default values are not allowed for
-`dict` or `optional` types.  Modifiers and defaults must be separated from the
-type with a single space.
+`optional` or `list`.  A **default** value can follow the type — used when the
+definition is not present.  Default values are not allowed for `dict` or
+`optional` types.  Modifiers and defaults must be separated from the type with
+a single space.
 
 **Text** is a sequence of characters.
 ```
