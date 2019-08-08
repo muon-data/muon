@@ -1,4 +1,4 @@
-## MuON v0.2.1alpha
+## MuON v0.3.0alpha
 
 *Micro Object Notation*
 
@@ -8,7 +8,7 @@ expressive as other formats, but [much simpler](WHY.md).
 ```
 # Example MuON
 sample: Text can contain "quotes" and colons (:)
-record:
+things:
   apples: 13
   owned: true
   poem: Once upon a midnight dreary, … 🌑 + 🌁?
@@ -24,8 +24,6 @@ does not allow
 all characters are
 [Unicode scalars](https://unicode.org/glossary/#unicode_scalar_value).
 
-Each file is a *tree* of **dictionaries** (records), with an implied **root**.
-
 Every line feed (U+000A) marks the end of a **line**.  There are three line
 types: *blank*, *comment* and *definition*.  **Blank** lines contain no
 characters.  **Comments** begin with zero or more spaces followed by a number
@@ -38,10 +36,9 @@ A **definition** creates a mapping between a **key** and **value**, like so:
 key: value
 ```
 
-With no **indents**, mappings are created for the root dictionary.  When a
-mapping defines a new dictionary, subsequent definitions with an additional
-indent are for that dictionary.
-
+Each file is a tree of **branches** starting from a root record.  With no
+**indents**, mappings are contained in the root.  When a mapping defines a
+branch, subsequent definitions with an additional indent are contained by it.
 ```
 key_in_root: value in root
 branch:
@@ -50,7 +47,7 @@ branch:
 
 Every indent in a file must contain the same number of spaces, typically 2 to 4.
 Only spaces (U+0020) are allowed, not tabs or other whitespace.  For nested
-dictionaries, multiple indents are used.
+branches, multiple indents are used.
 
 ```
 mesa:
@@ -95,7 +92,7 @@ line of three colons.
 :::
 # Example schema
 sample: text
-record: dict
+things: record
   apples: int
   owned: bool
   poem: text
@@ -103,12 +100,12 @@ record: dict
 :::
 ```
 
-A **type** is one of eight values: `text`, `bool`, `int`, `float`, `datetime`,
-`date`, `time` or `dict`.  Any type may be preceded by a **modifier**, either
-`optional` or `list`.  A **default** value can follow the type — used when the
-definition is not present.  Default values are not allowed for `dict` or
-`optional` types.  Modifiers and defaults are separated from the type with a
-single space.
+A **type** is one of nine values: `text`, `bool`, `int`, `float`, `datetime`,
+`date`, `time`, `record` or `dictionary`.  Any type may be preceded by a
+**modifier**, either `optional` or `list`.  A **default** value can follow the
+type — used when the definition is not present.  Default values are not allowed
+for `record`, `dictionary` or `optional` types.  Modifiers and defaults are
+separated from the type with a single space.
 
 **Text** is a sequence of characters.
 ```
@@ -197,11 +194,10 @@ start: 08:00:00
 end: 15:58:14.593849001
 ```
 
-A **dict** is a *record* containing definitions on subsequent indented lines.
-
+A **record** is a *branch* containing definitions on subsequent indented lines.
 ```
 :::
-thing: dict
+thing: record
   alpha: int
   beta: text
 :::
@@ -210,12 +206,26 @@ thing:
   beta: What have you
 ```
 
-Since dictionaries do not use the values from their definitions, those values
+Since records do not use the values from their definitions, those values
 can **substitute** for the first contained mapping, which must then be left out.
-Substitution is not allowed for `dict` or `optional` mappings.
+Substitution is not allowed for `record`, `dictionary` or `optional` mappings.
 ```
 thing: 15
   beta: alpha is equal to 15
+```
+
+A **dictionary** is a *branch* type for associative arrays.  The schema must
+contain a single mapping with types for both key and value.  The key type can be
+`text`, `bool`, `int`, `float`, `datetime`, `date` or `time`.
+```
+:::
+number_word: dictionary
+  text: int
+:::
+number_word:
+  fifty: 50
+  one: 1
+  thirteen: 13
 ```
 
 **Optional** types are not required — the absence of a definition represents
@@ -249,11 +259,11 @@ numbers: 0 1 1 2 3
 # same as numbers: 0 1 1 2 3 5 8 13 21 34
 ```
 
-To append to a **list of dictionaries**, since the definitions are not
-consecutive, the key cannot be blank.
+To append to **list record** or **list dictionary**, since the definitions are
+not consecutive, the key cannot be blank.
 ```
 :::
-person: list dict
+person: list record
   name: text
   birthday: date
 :::
@@ -263,11 +273,10 @@ person: Abraham Lincoln
   birthday: 1809-02-12
 ```
 
-For a **list of text**, items are separated by spaces, just like other lists.
-If the text contains spaces, a **text value** separator `:=` can be used to
-treat an entire value as a single item.  The *text append* separator `:>` will
-also append the value as one item.
-
+For **list text**, items are separated by spaces, just like other lists.  If the
+text contains spaces, a **text value** separator `:=` can be used to treat an
+entire value as a single item.  The *text append* separator `:>` will also
+append the value as one item.
 ```
 :::
 to_do: list text
