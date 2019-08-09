@@ -108,16 +108,16 @@ movie: list record
 :::
 ```
 
-There are nine available **types**: `text`, `bool`, `int`, `number`, `datetime`,
-`date`, `time`, `record` and `dictionary`.  They are used to parse **objects**
-from *values*.
+There are ten available **types**: `text`, `bool`, `int`, `number`, `datetime`,
+`date`, `time`, `record`, `dictionary` and `any`.  They are used to parse
+**objects** from *values*.
 
 A **modifier** may precede the type, either `optional` or `list`.  One space
 is between the *modifier* and *type*.
 
 A **default** value can follow the *type*, with a single space between them.
 They are used when a definition is not present.  Defaults are not allowed for
-`record`, `dictionary` or `optional` types.
+`record`, `dictionary`, `any` or `optional` types.
 
 **Text** is a sequence of characters.
 ```muon
@@ -225,7 +225,7 @@ book:
 
 Since records do not use their *values*, they can **substitute** for the first
 *field*, which must then be left out.  Substitution is not allowed for `record`,
-`dictionary` or `optional` fields.
+`dictionary`, `any` or `optional` fields.
 ```muon
 book: The Left Hand of Darkness
   author: Ursula K. Le Guin
@@ -245,6 +245,27 @@ num_word:
   fifty: 50
   one: 1
   thirteen: 13
+```
+
+**Any** is a *branch* containing data of any type.  It should be used for data
+which does not fit into a rigid schema.
+```muon
+:::
+product: list record
+  name: text
+  price: number
+  details: any
+:::
+product: duct tape
+  price: 4.99
+  details:
+    color: silver
+    width: 8 cm
+product: machete
+  price: 29.99
+  details:
+    length: 50 cm
+    weight: 0.5 kg
 ```
 
 **Optional** types are not required — the absence of a definition represents
