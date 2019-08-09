@@ -1,4 +1,4 @@
-## MuON v0.3.0alpha
+## MuON v0.3.0beta
 
 *Micro Object Notation*
 
@@ -37,7 +37,7 @@ Every *line feed* (U+000A) marks the end of a **line**.  There are three types:
 # Example comment
 ```
 
-A **definition** maps a *key* to a *value*, with a colon and space `: ` between,
+A **definition** maps a *key* to a *value*, with a colon and space `: ` between,
 like so:
 ```muon
 key: value
@@ -53,8 +53,8 @@ branch:
   key_in_branch: value in branch
 ```
 
-Definition **indents** are exactly 2, 3 or 4 spaces (U+0020).  Nested branches
-use multiple *indents*.  The number of spaces must be the same for all indents
+Definition **indents** are exactly 2, 3 or 4 spaces (U+0020).  *Nested* branches
+use multiple indents.  The number of spaces must be the same for all indents
 in a file.
 ```muon
 mesa:
@@ -149,8 +149,7 @@ earth_is_flat: false
 
 **Int** is an *integer* (whole number) in one of three forms:
 
-  * *Decimal*: sequence of digits `0`-`9` (not starting with `0`).  May have a
-    `+` or `-` sign prefix
+  * *Decimal*: sequence of digits `0`-`9`.  May have a `+` or `-` sign prefix
   * *Binary*: `0b` followed by sequence of digits `0` or `1`
   * *Hexadecimal*: `0x` followed by sequence of digits `0`-`9`, `A`-`F` or
     `a`-`f`
