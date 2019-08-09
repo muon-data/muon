@@ -108,9 +108,9 @@ movie: list record
 :::
 ```
 
-There are nine available **types**: `text`, `bool`, `int`, `float`,
-`datetime`, `date`, `time`, `record` and `dictionary`.  They are used to parse
-**objects** from *values*.
+There are nine available **types**: `text`, `bool`, `int`, `number`, `datetime`,
+`date`, `time`, `record` and `dictionary`.  They are used to parse **objects**
+from *values*.
 
 A **modifier** may precede the type, either `optional` or `list`.  One space
 is between the *modifier* and *type*.
@@ -166,7 +166,7 @@ shephard: 0b01_0111
 kwon: 0x2a
 ```
 
-A **float** is a
+A **number** is a
 [floating point](https://en.wikipedia.org/wiki/IEEE_754) number, made up of
 these parts:
   1. *Whole number* part (same as decimal int)
@@ -235,7 +235,7 @@ book: The Left Hand of Darkness
 A **dictionary** is a *branch* for associative arrays — useful if keys are not
 known in advance.  The schema must contain a single definition with types for
 both *key* and *value*.  The key type is restricted to `text`, `bool`, `int`,
-`float`, `datetime`, `date` or `time`.
+`number`, `datetime`, `date` or `time`.
 ```muon
 :::
 num_word: dictionary
