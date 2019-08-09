@@ -44,7 +44,7 @@ key: value
 ```
 If the value is empty, the space is not required.
 
-Some definitions can create **branches**.  Starting from a *root record*, all
+Some definitions create **branches**.  Starting from a *root record*, all
 branches form a tree.  With no *indents*, definitions are contained in the root.
 After a branch, subsequent definitions with one more indent are contained in it.
 ```muon
@@ -89,7 +89,7 @@ Unicode character is allowed.
 
 ### Schema
 
-A **schema** is a template with *types* as values.  It can either be separate or
+A **schema** is a template with *types* as values.  It can be separate or
 prepended to a MuON file.  In either case, it begins and ends with a line of
 three colons.
 
@@ -112,12 +112,12 @@ There are ten available **types**: `text`, `bool`, `int`, `number`, `datetime`,
 `date`, `time`, `record`, `dictionary` and `any`.  They are used to parse
 **objects** from *values*.
 
-A **modifier** may precede the type, either `optional` or `list`.  One space
-is between the *modifier* and *type*.
+A **modifier** may precede the type.  It is either `optional` or `list`,
+followed by a space.
 
-A **default** value can follow the *type*, with a single space between them.
-They are used when a definition is not present.  Defaults are not allowed for
-`record`, `dictionary`, `any` or `optional` types.
+A **default** value can follow the type, with a space between.  It is a value
+for the type, used when a definition is not present.  Defaults are not allowed
+for `record`, `dictionary`, `any` or `optional` types.
 
 **Text** is a sequence of characters.
 ```muon
