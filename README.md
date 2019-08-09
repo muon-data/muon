@@ -22,38 +22,40 @@ movie: Alien
 
 ### Specification
 
-**MuON** files are [UTF-8 encoded](https://en.wikipedia.org/wiki/UTF-8) with no
+**MuON** files are [Unicode](https://home.unicode.org/) text encoded in
+[UTF-8](https://en.wikipedia.org/wiki/UTF-8), with no
 [byte-order mark](https://unicode.org/glossary/#byte_order_mark).  Since UTF-8
 does not allow
 [surrogate code points](https://unicode.org/glossary/#surrogate_code_point),
 all characters are
 [Unicode scalars](https://unicode.org/glossary/#unicode_scalar_value).
 
-Every line feed (U+000A) marks the end of a **line**.  There are three line
-types: *blank*, *comment* and *definition*.  **Blank** lines contain no
-characters.  **Comments** begin with zero or more spaces followed by a number
-sign:
+Every *line feed* (U+000A) marks the end of a **line**.  There are three types:
+*blank*, *comment* and *definition*.  **Blank** lines contain no characters.
+**Comments** begin with zero or more spaces, followed by a number sign:
 ```muon
 # Example comment
 ```
 
-A **definition** creates a mapping between a **key** and **value**, like so:
+A **definition** maps a *key* to a *value*, with a colon and space `: ` between,
+like so:
 ```muon
 key: value
 ```
+If the value is empty, the space is not required.
 
-Each file is a tree of **branches** starting from a root record.  With no
-**indents**, mappings are contained in the root.  When a mapping defines a
-branch, subsequent definitions with an additional indent are contained by it.
+Some definitions can create **branches**.  Starting from a *root record*, all
+branches form a tree.  With no *indents*, definitions are contained in the root.
+After a branch, subsequent definitions with one more indent are contained in it.
 ```muon
 key_in_root: value in root
 branch:
   key_in_branch: value in branch
 ```
 
-Every indent in a file must contain the same number of spaces, typically 2 to 4.
-Only spaces (U+0020) are allowed, not tabs or other whitespace.  For nested
-branches, multiple indents are used.
+Definition **indents** are exactly 2, 3 or 4 spaces (U+0020).  Nested branches
+use multiple *indents*.  The number of spaces must be the same for all indents
+in a file.
 ```muon
 mesa:
    # One indent; 3 spaces
@@ -65,7 +67,7 @@ mesa:
 
 A **key** is a sequence of one or more characters.  It must be `"`**quoted**`"`
 if it contains a colon or begins with a space, quote mark or number sign.  When
-*quoted*, all contained quote marks must be escaped by doubling:
+*quoted*, all contained quote marks are escaped by doubling:
 ```muon
 # "skeleton" key must be quoted
 """skeleton"" key": value
@@ -77,20 +79,19 @@ of colon, contains
 [control characters](https://en.wikipedia.org/wiki/Unicode_control_characters)
 or begins with [whitespace](https://en.wikipedia.org/wiki/Whitespace_character).
 
-It is common to use keys directly within programming languages as
+*Record* keys are often used in programming languages as
 [identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
-In this case, they should contain only ASCII alphanumeric or underscore
+For compatibility, they should contain only ASCII alphanumeric or underscore
 characters.
 
 A **value** is a sequence of characters.  With the exception of *line feed*, any
-unicode character is allowed.  If a value is empty, the space after the colon in
-the definition is not required.
+Unicode character is allowed.
 
 ### Schema
 
-A **schema** is a template with all values containing *types*.  It can either be
-separate or prepended to a MuON file.  In either case, it begins and ends with a
-line of three colons.
+A **schema** is a template with *types* as values.  It can either be separate or
+prepended to a MuON file.  In either case, it begins and ends with a line of
+three colons.
 
 ```muon
 :::
@@ -107,12 +108,16 @@ movie: list record
 :::
 ```
 
-A **type** is one of nine values: `text`, `bool`, `int`, `float`, `datetime`,
-`date`, `time`, `record` or `dictionary`.  Any type may be preceded by a
-**modifier**, either `optional` or `list`.  A **default** value can follow the
-type — used when the definition is not present.  Default values are not allowed
-for `record`, `dictionary` or `optional` types.  Modifiers and defaults are
-separated from the type with a single space.
+There are nine available **types**: `text`, `bool`, `int`, `float`,
+`datetime`, `date`, `time`, `record` and `dictionary`.  They are used to parse
+**objects** from *values*.
+
+A **modifier** may precede the type, either `optional` or `list`.  One space
+is between the *modifier* and *type*.
+
+A **default** value can follow the *type*, with a single space between them.
+They are used when a definition is not present.  Defaults are not allowed for
+`record`, `dictionary` or `optional` types.
 
 **Text** is a sequence of characters.
 ```muon
@@ -124,13 +129,13 @@ farewell: text Goodbye!
 farewell: Be seeing you.
 ```
 
-Because values cannot contain line feeds, text definitions must be **appended**
-to represent them.  This is done with a **text append** separator, which is `:>`
-instead of the usual `: ` between the key and value.  A line feed will be
-inserted before each appended value.
+Because values cannot contain *line feeds*, text definitions must be
+**appended** to represent them.  This is done with a **text append** separator,
+which is `:>` instead of the usual `: ` between the key and value.  A *line
+feed* is inserted before each appended value.
 
-When appending, a **blank** key should be used — a sequence of spaces with the
-same number of characters as the key.
+When appending, use a **blank** key — a sequence of spaces with the same number
+of characters as the key.
 
 ```muon
 lyric: Out in the garden
@@ -185,7 +190,7 @@ avogadro: 6.022_140_76e23
 
 **Datetime** is *date*, *time* and *offset*, as specified by `date-time`
 from [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).  The date and
-time must be separated by an upper-case `T`.  If the offset is represented by
+time are separated by an uppercase `T` only.  If the offset is represented by
 `Z`, it must also be uppercase.
 ```muon
 moonwalk: 1969-07-21T02:56:00Z
@@ -204,7 +209,7 @@ start: 08:00:00
 end: 15:58:14.593849001
 ```
 
-A **record** is a *branch* containing definitions on subsequent indented lines.
+A **record** is a *branch* containing *fields* as subsequent definitions.
 ```muon
 :::
 book: record
@@ -218,18 +223,19 @@ book:
   year: 1979
 ```
 
-Since records do not use the values from their definitions, those values
-can **substitute** for the first contained mapping, which must then be left out.
-Substitution is not allowed for `record`, `dictionary` or `optional` mappings.
+Since records do not use their *values*, they can **substitute** for the first
+*field*, which must then be left out.  Substitution is not allowed for `record`,
+`dictionary` or `optional` fields.
 ```muon
 book: The Left Hand of Darkness
   author: Ursula K. Le Guin
   year: 1969
 ```
 
-A **dictionary** is a *branch* type for associative arrays.  The schema must
-contain a single mapping with types for both key and value.  The key type can be
-`text`, `bool`, `int`, `float`, `datetime`, `date` or `time`.
+A **dictionary** is a *branch* for associative arrays — useful if keys are not
+known in advance.  The schema must contain a single definition with types for
+both *key* and *value*.  The key type is restricted to `text`, `bool`, `int`,
+`float`, `datetime`, `date` or `time`.
 ```muon
 :::
 num_word: dictionary
@@ -252,8 +258,8 @@ name: Surfer Joe
 # no occupation
 ```
 
-A **list** is a sequence of *items*, separated by spaces.  If there are no
-items in a list, its definition should be omitted.
+A **list** is parsed as a sequence of *objects*, separated by spaces.  If a
+*list* is empty, omit its definition.
 ```muon
 :::
 show_times: list time
@@ -263,16 +269,15 @@ show_times: 15:40:00 18:00:00 20:20:00
 # no healthy_snacks
 ```
 
-Like text, lists can be *appended*.  All items are added to the end of the
-list.
+Like text, *lists* can be *appended*.  All *objects* are added to the end.
 ```muon
 fibonacci: 0 1 1 2 3
          : 5 8 13 21 34
 # same as fibonacci: 0 1 1 2 3 5 8 13 21 34
 ```
 
-To append to **list record** or **list dictionary**, since the definitions are
-not consecutive, the key cannot be blank.
+When appending to **list record** or **list dictionary**, the key cannot be
+blank, since the definitions are not consecutive.
 ```muon
 person: George Washington
   birthday: 1732-02-22
@@ -280,10 +285,10 @@ person: Abraham Lincoln
   birthday: 1809-02-12
 ```
 
-For **list text**, items are separated by spaces, just like other lists.  If the
-text contains spaces, a **text value** separator `:=` can be used to treat an
-entire value as a single item.  The *text append* separator `:>` will also
-append the value as one item.
+For **list text**, *objects* are separated by spaces, just like other lists.  If
+a text *object* contains spaces, use the **text value** separator `:=` to treat
+an entire *value* as a single *object*.  The *text append* separator `:>` will
+also append an entire *value* to the previous text *object*.
 ```muon
 shopping: avocado banana
         :=cream cheese
