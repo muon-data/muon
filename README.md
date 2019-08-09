@@ -5,14 +5,19 @@
 **MuON** is a format for configuration files and data interchange — as
 expressive as other formats, but [much simpler](WHY.md).
 
-```
-# Example MuON
-sample: Text can contain "quotes" and colons (:)
-things:
-  apples: 13
-  owned: true
-  poem: Once upon a midnight dreary, … 🌑 + 🌁?
-  constant: 3.141592653589793
+```muon
+# MuON example
+movie: Alien
+  director: Ridley Scott
+  cast:=Sigourney Weaver
+      :=Tom Skerritt
+      :=John Hurt
+  release: 1979-06-22
+    region: USA
+  release: 1979-09-06
+    region: UK
+  gross: 203_630_630
+  emoji: 👽 👾
 ```
 
 ### Specification
@@ -28,18 +33,19 @@ Every line feed (U+000A) marks the end of a **line**.  There are three line
 types: *blank*, *comment* and *definition*.  **Blank** lines contain no
 characters.  **Comments** begin with zero or more spaces followed by a number
 sign:
-
-`# Example comment`
+```muon
+# Example comment
+```
 
 A **definition** creates a mapping between a **key** and **value**, like so:
-```
+```muon
 key: value
 ```
 
 Each file is a tree of **branches** starting from a root record.  With no
 **indents**, mappings are contained in the root.  When a mapping defines a
 branch, subsequent definitions with an additional indent are contained by it.
-```
+```muon
 key_in_root: value in root
 branch:
   key_in_branch: value in branch
@@ -48,8 +54,7 @@ branch:
 Every indent in a file must contain the same number of spaces, typically 2 to 4.
 Only spaces (U+0020) are allowed, not tabs or other whitespace.  For nested
 branches, multiple indents are used.
-
-```
+```muon
 mesa:
    # One indent; 3 spaces
    comida: taco
@@ -61,8 +66,7 @@ mesa:
 A **key** is a sequence of one or more characters.  It must be `"`**quoted**`"`
 if it contains a colon or begins with a space, quote mark or number sign.  When
 *quoted*, all contained quote marks must be escaped by doubling:
-
-```
+```muon
 # "skeleton" key must be quoted
 """skeleton"" key": value
 ```
@@ -88,15 +92,18 @@ A **schema** is a template with all values containing *types*.  It can either be
 separate or prepended to a MuON file.  In either case, it begins and ends with a
 line of three colons.
 
-```
+```muon
 :::
-# Example schema
-sample: text
-things: record
-  apples: int
-  owned: bool
-  poem: text
-  constant: float
+# Example MuON schema
+movie: list record
+  title: text
+  director: text Alan Smithee
+  cast: list text
+  release: list record
+    release_date: date
+    region: text
+  gross: int
+  emoji: optional text
 :::
 ```
 
@@ -108,7 +115,7 @@ for `record`, `dictionary` or `optional` types.  Modifiers and defaults are
 separated from the type with a single space.
 
 **Text** is a sequence of characters.
-```
+```muon
 :::
 greeting: text Hello!
 farewell: text Goodbye!
@@ -125,12 +132,15 @@ inserted before each appended value.
 When appending, a **blank** key should be used — a sequence of spaces with the
 same number of characters as the key.
 
-```
+```muon
 lyric: Out in the garden
      :>There's half of a heaven
 ```
 
 **Bool** is a *boolean*: either `true` or `false`.
+```muon
+earth_is_flat: false
+```
 
 **Int** is an *integer* (whole number) in one of three forms:
 
@@ -142,7 +152,7 @@ lyric: Out in the garden
 
 An underscore may be inserted between digits to improve readability.
 
-```
+```muon
 locke: 4
 reyes: 0b1000
 ford: 0x0F
@@ -164,65 +174,68 @@ part is not required.  As with ints, underscores may be included.
 The values `inf` and `NaN` stand for *infinity* and *not a number*,
 respectively.  Either can be prefixed with a `+` or `-` sign.
 
-```
-float0: -1.5
-float1: .6931471805599453
-float2: 100
-float3: 6.626_070_15e-34
-float4: 6.022_140_76e23
-float5: +inf
+```muon
+prime: 37
+log_e_2: .6931471805599453
+mercury: -38.83440
+planck: 6.626_070_15e-34
+buzz: +inf
+avogadro: 6.022_140_76e23
 ```
 
 **Datetime** is *date*, *time* and *offset*, as specified by `date-time`
 from [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).  The date and
 time must be separated by an upper-case `T`.  If the offset is represented by
 `Z`, it must also be uppercase.
-```
-event: 1969-07-21T02:56:00Z
+```muon
+moonwalk: 1969-07-21T02:56:00Z
 ```
 
 **Date** is *year*, *month* and *day*, as specified by `full-date` from
 [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).
-```
+```muon
 birthday: 2019-08-01
 ```
 
 **Time** is *hour*, *minute* and *second*, as specified by `partial-time` from
 [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).
-```
+```muon
 start: 08:00:00
 end: 15:58:14.593849001
 ```
 
 A **record** is a *branch* containing definitions on subsequent indented lines.
-```
+```muon
 :::
-thing: record
-  alpha: int
-  beta: text
+book: record
+  title: text
+  author: text
+  year: int
 :::
-thing:
-  alpha: 15
-  beta: What have you
+book:
+  title: If on a winter's night a traveler
+  author: Italo Calvino
+  year: 1979
 ```
 
 Since records do not use the values from their definitions, those values
 can **substitute** for the first contained mapping, which must then be left out.
 Substitution is not allowed for `record`, `dictionary` or `optional` mappings.
-```
-thing: 15
-  beta: alpha is equal to 15
+```muon
+book: The Left Hand of Darkness
+  author: Ursula K. Le Guin
+  year: 1969
 ```
 
 A **dictionary** is a *branch* type for associative arrays.  The schema must
 contain a single mapping with types for both key and value.  The key type can be
 `text`, `bool`, `int`, `float`, `datetime`, `date` or `time`.
-```
+```muon
 :::
-number_word: dictionary
+num_word: dictionary
   text: int
 :::
-number_word:
+num_word:
   fifty: 50
   one: 1
   thirteen: 13
@@ -230,7 +243,7 @@ number_word:
 
 **Optional** types are not required — the absence of a definition represents
 a `None` or `null` value.
-```
+```muon
 :::
 name: text
 occupation: optional text
@@ -241,32 +254,26 @@ name: Surfer Joe
 
 A **list** is a sequence of *items*, separated by spaces.  If there are no
 items in a list, its definition should be omitted.
-```
+```muon
 :::
-flags: list bool
-checks: list bool
+show_times: list time
+healthy_snacks: list text
 :::
-flags: true false true true
-# checks list is empty
+show_times: 15:40:00 18:00:00 20:20:00
+# no healthy_snacks
 ```
 
 Like text, lists can be *appended*.  All items are added to the end of the
 list.
-
-```
-numbers: 0 1 1 2 3
-       : 5 8 13 21 34
-# same as numbers: 0 1 1 2 3 5 8 13 21 34
+```muon
+fibonacci: 0 1 1 2 3
+         : 5 8 13 21 34
+# same as fibonacci: 0 1 1 2 3 5 8 13 21 34
 ```
 
 To append to **list record** or **list dictionary**, since the definitions are
 not consecutive, the key cannot be blank.
-```
-:::
-person: list record
-  name: text
-  birthday: date
-:::
+```muon
 person: George Washington
   birthday: 1732-02-22
 person: Abraham Lincoln
@@ -277,13 +284,11 @@ For **list text**, items are separated by spaces, just like other lists.  If the
 text contains spaces, a **text value** separator `:=` can be used to treat an
 entire value as a single item.  The *text append* separator `:>` will also
 append the value as one item.
-```
-:::
-to_do: list text
-:::
-to_do: first second
-     :=third item
-     : fourth fifth sixth
-     :>item
-     : seventh
+```muon
+shopping: avocado banana
+        :=cream cheese
+        : cucumber
+        :=ice cream
+        : raw
+        :>burger! (mmmm)
 ```
