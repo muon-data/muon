@@ -1,6 +1,7 @@
 ## MuON v0.3.0beta
 
 *Micro Object Notation*
+<br/><sub><sub>&nbsp;&nbsp;&nbsp;&nbsp;by Douglas Lau</sub></sub>
 
 **MuON** is a format for configuration files and data interchange — as
 expressive as other formats, but [much simpler](WHY.md).
@@ -317,3 +318,8 @@ shopping: avocado banana
         : raw
         :>burger! (mmmm)
 ```
+
+### Contributing
+
+Any feedback, bug reports, spelling fixes, or text clarity improvements are
+welcome!  Please create an [issue](https://github.com/muon-data/muon/issues).
