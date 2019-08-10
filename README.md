@@ -143,19 +143,19 @@ earth_is_flat: false
 **Int** is an *integer* (whole number) in one of three forms:
 
   * *Decimal*: sequence of digits `0`-`9`.  May have a `+` or `-` sign prefix
-  * *Binary*: `0b` followed by sequence of digits `0` or `1`
-  * *Hexadecimal*: `0x` followed by sequence of digits `0`-`9`, `A`-`F` or
+  * *Binary*: `b` followed by sequence of digits `0` or `1`
+  * *Hexadecimal*: `x` followed by sequence of digits `0`-`9`, `A`-`F` or
     `a`-`f`
 
 An underscore may be inserted between digits to improve readability.
 
 ```muon
 locke: 4
-reyes: 0b1000
-ford: 0x0F
+reyes: b1000
+ford: x0F
 jarrah: +16
-shephard: 0b01_0111
-kwon: 0x2a
+shephard: b01_0111
+kwon: x2a
 ```
 
 A **number** is a
