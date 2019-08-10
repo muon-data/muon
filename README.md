@@ -23,13 +23,10 @@ movie: Alien
 
 ### Specification
 
-**MuON** files are [Unicode](https://home.unicode.org/) text encoded in
+**MuON** is [Unicode](https://home.unicode.org/) text encoded in
 [UTF-8](https://en.wikipedia.org/wiki/UTF-8), with no
-[byte-order mark](https://unicode.org/glossary/#byte_order_mark).  Since UTF-8
-does not allow
-[surrogate code points](https://unicode.org/glossary/#surrogate_code_point),
-all characters are
-[Unicode scalars](https://unicode.org/glossary/#unicode_scalar_value).
+[byte-order mark](https://unicode.org/glossary/#byte_order_mark).
+MuON is case sensitive.
 
 Every *line feed* (U+000A) marks the end of a **line**.  There are three types:
 *blank*, *comment* and *definition*.  **Blank** lines contain no characters.
@@ -74,16 +71,11 @@ if it contains a colon or begins with a space, quote mark or number sign.  When
 """skeleton"" key": value
 ```
 
-Also, a key *should* be quoted if it contains
-[homoglyphs](https://en.wikipedia.org/wiki/Homoglyph#Unicode_homoglyphs)
-of colon, contains
+Also, a key *should* be quoted if it begins with
+[whitespace](https://en.wikipedia.org/wiki/Whitespace_character), contains
 [control characters](https://en.wikipedia.org/wiki/Unicode_control_characters)
-or begins with [whitespace](https://en.wikipedia.org/wiki/Whitespace_character).
-
-*Record* keys are often used in programming languages as
-[identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
-For compatibility, they should contain only ASCII alphanumeric or underscore
-characters.
+or [homoglyphs](https://en.wikipedia.org/wiki/Homoglyph#Unicode_homoglyphs)
+of colon.
 
 A **value** is a sequence of characters.  With the exception of *line feed*, any
 Unicode character is allowed.
@@ -209,7 +201,7 @@ start: 08:00:00
 end: 15:58:14.593849001
 ```
 
-A **record** is a *branch* containing *fields* as subsequent definitions.
+A **record** is a branch containing *fields* as subsequent definitions.
 ```muon
 :::
 book: record
@@ -223,8 +215,13 @@ book:
   year: 1979
 ```
 
-Since records do not use their *values*, they can **substitute** for the first
-*field*, which must then be left out.  Substitution is not allowed for `record`,
+**Field** keys are often used in programming languages as
+[identifiers](https://en.wikipedia.org/wiki/Identifier#In_computer_languages).
+For compatibility, they should contain only ASCII alphanumeric or underscore
+characters.
+
+Since records do not use their values, they can **substitute** for the first
+field, which must then be left out.  Substitution is not allowed for `record`,
 `dictionary`, `any` or `optional` fields.
 ```muon
 book: The Left Hand of Darkness
@@ -248,9 +245,9 @@ nemesis: Mordred
   health: 60
 ```
 
-A **dictionary** is a *branch* for associative arrays — useful if keys are not
+A **dictionary** is a branch for associative arrays — useful if keys are not
 known in advance.  The schema must contain a single definition with types for
-both *key* and *value*.  The key type is restricted to `text`, `bool`, `int`,
+both key and value.  The key type is restricted to `text`, `bool`, `int`,
 `number`, `datetime`, `date` or `time`.
 ```muon
 :::
@@ -263,7 +260,7 @@ num_word:
   thirteen: 13
 ```
 
-**Any** is a *branch* containing data of any type.  It should be used for data
+**Any** is a branch containing data of any type.  It should be used for data
 which does not fit into a rigid schema.
 ```muon
 :::
