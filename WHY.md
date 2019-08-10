@@ -115,7 +115,7 @@ book:
 ```
 ----
 ### MuON:
-```
+```muon
 book: Pale Fire
   author: Vladimir Nabokov
   year: 1962
@@ -130,3 +130,10 @@ book: The Curious Incident of the Dog in the Night-Time
     location: Swindon
   character: Siobhan
 ```
+----
+
+### Implementations
+
+* Rust: [muon-rs](https://github.com/muon-data/muon-rs)
+
+If you know of any others, please make a PR with a link!
