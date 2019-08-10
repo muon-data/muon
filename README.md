@@ -232,6 +232,22 @@ book: The Left Hand of Darkness
   year: 1969
 ```
 
+In the schema, a **record id** can follow `record` after a space.  It is used
+if a record exists in more than one place.  After the first definition, the
+fields do not need to be included.
+```muon
+:::
+player: record Character
+  name: text
+  health: int
+nemesis: record Character
+:::
+player: Arthur
+  health: 50
+nemesis: Mordred
+  health: 60
+```
+
 A **dictionary** is a *branch* for associative arrays — useful if keys are not
 known in advance.  The schema must contain a single definition with types for
 both *key* and *value*.  The key type is restricted to `text`, `bool`, `int`,
