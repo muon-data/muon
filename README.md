@@ -3,8 +3,9 @@
 *Micro Object Notation*
 <br/><sub><sub>&nbsp;&nbsp;&nbsp;&nbsp;by Douglas Lau</sub></sub>
 
-**MuON** is a format for configuration files and data interchange — as
-expressive as other formats, but [much simpler](WHY.md).
+**MuON** is a text format for data serialization.  It is suitable for
+configuration files and data interchange — as expressive as other formats, but
+[much simpler](WHY.md).
 
 ```muon
 # MuON example
@@ -43,7 +44,7 @@ If the value is empty, the space is not required.
 
 Some definitions create **branches**.  Starting from a *root record*, all
 branches form a tree.  With no *indents*, definitions are contained in the root.
-After a branch, subsequent definitions with one more indents are contained in
+After a branch, subsequent definitions with one more indent are contained in
 it.
 ```muon
 key_in_root: value in root
