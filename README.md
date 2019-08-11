@@ -30,13 +30,12 @@ MuON is case sensitive.
 
 Every *line feed* (U+000A) marks the end of a **line**.  There are three types:
 *blank*, *comment* and *definition*.  **Blank** lines contain no characters.
-**Comments** begin with zero or more spaces, followed by a number sign:
+**Comments** begin with a number sign `#`, which may be preceded by spaces.
 ```muon
-# Example comment
+  # Example comment
 ```
 
-A **definition** maps a *key* to a *value*, with a colon and space `: ` between,
-like so:
+A **definition** maps a *key* to a *value*, with a colon and space `: ` between.
 ```muon
 key: value
 ```
@@ -44,7 +43,8 @@ If the value is empty, the space is not required.
 
 Some definitions create **branches**.  Starting from a *root record*, all
 branches form a tree.  With no *indents*, definitions are contained in the root.
-After a branch, subsequent definitions with one more indent are contained in it.
+After a branch, subsequent definitions with one more indents are contained in
+it.
 ```muon
 key_in_root: value in root
 branch:
@@ -55,19 +55,18 @@ Definition **indents** are exactly 2, 3 or 4 spaces (U+0020).  *Nested* branches
 use multiple indents.  The number of spaces must be the same for all indents
 in a file.
 ```muon
-mesa:
+family: Ursidae
    # One indent; 3 spaces
-   comida: taco
-   bandeja:
+   genus: Ailuropoda
       # Two indents; 6 spaces
-      nota: Lo dejo
+      species: A. melanoleuca 🐼
 ```
 
 A **key** is a sequence of one or more characters.  It must be `"`**quoted**`"`
-if it contains a colon or begins with a space, quote mark or number sign.  When
-*quoted*, all contained quote marks are escaped by doubling:
+if it contains a colon or begins with a space, quote mark or number sign.  In
+this case, all quote marks in the key must be *doubled*.
 ```muon
-# "skeleton" key must be quoted
+# "skeleton" key begins with a quote mark
 """skeleton"" key": value
 ```
 
