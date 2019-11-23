@@ -1,4 +1,4 @@
-## MuON v0.3.0
+## MuON v0.3.1
 
 *Micro Object Notation*
 <br/><sub><sub>&nbsp;&nbsp;&nbsp;&nbsp;by Douglas Lau</sub></sub>
@@ -109,8 +109,9 @@ A **modifier** may precede the type.  It is either `optional` or `list`,
 followed by a space.
 
 A **default** value can follow the type, with a space between.  It is a value
-for the type, used when a definition is not present.  Defaults are not allowed
-for `record`, `dictionary`, `any` or `optional` types.
+for the type, used when a definition is not present.  Defaults are only allowed
+for `text`, `bool`, `int`, `number`, `datetime`, `date` and `time` types
+without `optional` or `list` modifiers.
 
 **Text** is a sequence of characters.
 ```muon
@@ -221,8 +222,9 @@ For compatibility, they should contain only ASCII alphanumeric or underscore
 characters.
 
 Since records do not use their values, they can **substitute** for the first
-field, which must then be left out.  Substitution is not allowed for `record`,
-`dictionary`, `any` or `optional` fields.
+field, which must then be left out.  Like defaults, substitution is only
+allowed for `text`, `bool`, `int`, `number`, `datetime`, `date` and `time` types
+without `optional` or `list` modifiers.
 ```muon
 book: The Left Hand of Darkness
   author: Ursula K. Le Guin
