@@ -1,4 +1,4 @@
-## MuON v0.3.1
+## MuON v0.4.0alpha
 
 *Micro Object Notation*
 <br/><sub><sub>&nbsp;&nbsp;&nbsp;&nbsp;by Douglas Lau</sub></sub>
@@ -112,6 +112,17 @@ A **default** value can follow the type, with a space between.  It is a value
 for the type, used when a definition is not present.  Defaults are only allowed
 for `text`, `bool`, `int`, `number`, `datetime`, `date` and `time` types
 without `optional` or `list` modifiers.
+
+Type **constraints** can follow the type to limit allowed values.  There are
+four available:
+* `>`*c* Greater than _c_
+* `>=`*c* Greater than or equal to _c_
+* `<`*c* Less than _c_
+* `<=`*c* Less than or equal to _c_
+
+Constraints are allowed for for `text`, `int`, `number`, `datetime`, `date`
+and `time` types.  For `text`, a constraint applies to the _number of
+characters_.
 
 **Text** is a sequence of characters.
 ```muon
