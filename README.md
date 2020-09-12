@@ -1,4 +1,4 @@
-## MuON v0.4.0alpha
+## MuON v1.0
 
 *Micro Object Notation*
 <br/><sub><sub>&nbsp;&nbsp;&nbsp;&nbsp;by Douglas Lau</sub></sub>
