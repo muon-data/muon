@@ -27,16 +27,16 @@ movie: Alien
 **MuON** is [Unicode](https://home.unicode.org/) text encoded in
 [UTF-8](https://en.wikipedia.org/wiki/UTF-8), with no
 [byte-order mark](https://unicode.org/glossary/#byte_order_mark).
-MuON is case sensitive.
+MuON is case sensitive and *line based*.
 
-Every *line feed* (U+000A) marks the end of a **line**.  There are three types:
-*blank*, *comment* and *definition*.  **Blank** lines contain no characters.
-**Comments** begin with a number sign `#`, which may be preceded by spaces.
+A line is a *definition*, *comment* or *blank*, and must end with a single *line
+feed* character (U+000A).  **Comments** begin with a number sign `#`, which may
+be preceded by spaces.  **Blank** lines contain no characters.
 ```muon
   # Example comment
 ```
 
-A **definition** maps a *key* to a *value*, with a colon and space `: ` between.
+A **definition** maps a *key* to a *value*, with a colon and space between.
 ```muon
 key: value
 ```
@@ -108,15 +108,15 @@ There are ten available **types**: `text`, `bool`, `int`, `number`, `datetime`,
 A **modifier** may precede the type.  It is either `optional` or `list`,
 followed by a space.
 
-One or more **constraints** can follow the type, with a space between.  This is
+One or two **constraints** may follow the type, with a space between.  This is
 one of four specifiers `>`, `>=`, `<` or `<=`, followed by a value.  For `int`,
 `number`, `datetime`, `date` and `time` types, it defines a subrange of valid
 values.  For `text`, it restricts the count of _characters_.
 
-A **default** value can be included lastly on the type line, also separated with
-a space.  It is a value for the type, used when a definition is not present.
-Defaults are allowed for `text`, `bool`, `int`, `number`, `datetime`, `date`
-and `time` types without `optional` or `list` modifiers.
+A **default** value may be included after the type and any constraints, also
+separated with a space.  It is a value for the type, used when a definition is
+not present.  Defaults are allowed for `text`, `bool`, `int`, `number`,
+`datetime`, `date` and `time` types without `optional` or `list` modifiers.
 
 **Text** is a sequence of characters.
 ```muon
