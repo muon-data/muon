@@ -2,7 +2,7 @@
 book: list record
   title: text
   author: text
-  year: optional integer
+  year: optional integer >0
   character: list record
     name: text
     location: optional text

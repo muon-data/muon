@@ -94,7 +94,7 @@ movie: list record
   director: text Alan Smithee
   cast: list text
   release: list record
-    release_date: date
+    release_date: date >=1878-01-01
     region: text
   gross: int
   emoji: optional text
@@ -108,21 +108,15 @@ There are ten available **types**: `text`, `bool`, `int`, `number`, `datetime`,
 A **modifier** may precede the type.  It is either `optional` or `list`,
 followed by a space.
 
-A **default** value can follow the type, with a space between.  It is a value
-for the type, used when a definition is not present.  Defaults are only allowed
-for `text`, `bool`, `int`, `number`, `datetime`, `date` and `time` types
-without `optional` or `list` modifiers.
+One or more **constraints** can follow the type, with a space between.  This is
+one of four specifiers `>`, `>=`, `<` or `<=`, followed by a value.  For `int`,
+`number`, `datetime`, `date` and `time` types, it defines a subrange of valid
+values.  For `text`, it restricts the count of _characters_.
 
-Type **constraints** can follow the type to limit allowed values.  There are
-four available:
-* `>`*c* Greater than _c_
-* `>=`*c* Greater than or equal to _c_
-* `<`*c* Less than _c_
-* `<=`*c* Less than or equal to _c_
-
-Constraints are allowed for for `text`, `int`, `number`, `datetime`, `date`
-and `time` types.  For `text`, a constraint applies to the _number of
-characters_.
+A **default** value can be included lastly on the type line, also separated with
+a space.  It is a value for the type, used when a definition is not present.
+Defaults are allowed for `text`, `bool`, `int`, `number`, `datetime`, `date`
+and `time` types without `optional` or `list` modifiers.
 
 **Text** is a sequence of characters.
 ```muon
