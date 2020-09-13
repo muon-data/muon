@@ -207,7 +207,8 @@ start: 08:00:00
 end: 15:58:14.593849001
 ```
 
-A **record** is a branch containing *fields* as subsequent definitions.
+A **record** is a branch containing *fields* as subsequent definitions.  A
+record represents all of its fields.
 ```muon
 :::
 book: record
@@ -252,8 +253,8 @@ nemesis: Mordred
   health: 60
 ```
 
-A **choice** is a branch containing *variants* as subsequent definitions.  Also
-known as a *sum type*, a choice represents exactly one of the variants.
+A **choice** is a branch containing *variants* as subsequent definitions.  A
+choice represents exactly one of the variants.
 
 A **variant** containing no data is declared as a definition with no type.
 These variants can substitute for the choice value.
