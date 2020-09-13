@@ -1,4 +1,4 @@
-## MuON v1.1alpha
+## MuON v1.1
 
 *Micro Object Notation*
 <br/><sub><sub>&nbsp;&nbsp;&nbsp;&nbsp;by Douglas Lau</sub></sub>
@@ -159,6 +159,8 @@ earth_is_flat: false
   * *Hexadecimal*: `x` followed by sequence of digits `0`-`9`, `A`-`F` or
     `a`-`f`
 
+If no constraints are given, an integer has no bounds (*BigInt*).
+
 An underscore may be inserted between digits to improve readability.
 
 ```muon
@@ -172,7 +174,7 @@ kwon: x2a
 
 ---
 
-A **number** is a
+A **number** is a 64-bit
 [floating point](https://en.wikipedia.org/wiki/IEEE_754) number, made up of
 these parts:
   1. *Whole number* part (same as decimal int)
