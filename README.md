@@ -80,7 +80,7 @@ of colon.
 A **value** is a sequence of characters.  With the exception of *line feed*, any
 Unicode character is allowed.
 
-### Schema
+---
 
 A **schema** is a template with *types* as values.  It can be separate or
 prepended to a MuON file.  In either case, it begins and ends with a line of
@@ -118,6 +118,8 @@ not present.  Allowed types are `text`, `bool`, `int`, `number`, `datetime`,
 `date` and `time`.  Defaults are not allowed with `optional` or `list`
 modifiers.
 
+---
+
 **Text** is a sequence of characters.
 ```muon
 :::
@@ -141,10 +143,14 @@ lyric: Out in the garden
      :>There's half of a heaven
 ```
 
+---
+
 **Bool** is a *boolean*: either `true` or `false`.
 ```muon
 earth_is_flat: false
 ```
+
+---
 
 **Int** is an *integer* (whole number) in one of three forms:
 
@@ -163,6 +169,8 @@ jarrah: +16
 shephard: b01_0111
 kwon: x2a
 ```
+
+---
 
 A **number** is a
 [floating point](https://en.wikipedia.org/wiki/IEEE_754) number, made up of
@@ -186,6 +194,8 @@ buzz: +inf
 avogadro: 6.022_140_76e23
 ```
 
+---
+
 **Datetime** is *date*, *time* and *offset*, as specified by `date-time`
 from [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).  The date and
 time are separated by an uppercase `T` only.  If the offset is represented by
@@ -194,11 +204,15 @@ time are separated by an uppercase `T` only.  If the offset is represented by
 moonwalk: 1969-07-21T02:56:00Z
 ```
 
+---
+
 **Date** is *year*, *month* and *day*, as specified by `full-date` from
 [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).
 ```muon
 birthday: 2019-08-01
 ```
+
+---
 
 **Time** is *hour*, *minute* and *second*, as specified by `partial-time` from
 [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6).
@@ -206,6 +220,8 @@ birthday: 2019-08-01
 start: 08:00:00
 end: 15:58:14.593849001
 ```
+
+---
 
 A **record** is a branch containing *fields* as subsequent definitions.  A
 record represents all of its fields.
@@ -253,6 +269,8 @@ nemesis: Mordred
   health: 60
 ```
 
+---
+
 A **choice** is a branch containing *variants* as subsequent definitions.  A
 choice represents exactly one of the variants.
 
@@ -298,6 +316,8 @@ face_a: North
 face_b: East
 ```
 
+---
+
 A **dictionary** is a branch for associative arrays — useful if keys are not
 known in advance.  The schema must contain a single definition with types for
 both key and value.  The key type is restricted to `text`, `bool`, `int`,
@@ -312,6 +332,8 @@ num_word:
   one: 1
   thirteen: 13
 ```
+
+---
 
 **Any** is a branch containing data of any type.  It should be used for data
 which does not fit into a rigid schema.
@@ -334,6 +356,8 @@ product: machete
     weight: 0.5 kg
 ```
 
+---
+
 **Optional** types are not required — the absence of a definition represents
 a `None` or `null` value.
 ```muon
@@ -344,6 +368,8 @@ occupation: optional text
 name: Surfer Joe
 # no occupation
 ```
+
+---
 
 A **list** is parsed as a sequence of *objects*, separated by spaces.  If a
 *list* is empty, omit its definition.
