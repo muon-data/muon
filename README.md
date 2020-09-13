@@ -105,8 +105,7 @@ There are ten available **types**: `text`, `bool`, `int`, `number`, `datetime`,
 `date`, `time`, `record`, `dictionary` and `any`.  They are used to parse
 **objects** from *values*.
 
-A **modifier** may precede the type.  It is either `optional` or `list`,
-followed by a space.
+An `optional` or `list` **modifier** may precede the type, followed by a space.
 
 One or two **constraints** may follow the type, with a space between.  This is
 one of four specifiers `>`, `>=`, `<` or `<=`, followed by a value.  For `int`,
@@ -115,8 +114,9 @@ values.  For `text`, it restricts the count of _characters_.
 
 A **default** value may be included after the type and any constraints, also
 separated with a space.  It is a value for the type, used when a definition is
-not present.  Defaults are allowed for `text`, `bool`, `int`, `number`,
-`datetime`, `date` and `time` types without `optional` or `list` modifiers.
+not present.  Allowed types are `text`, `bool`, `int`, `number`, `datetime`,
+`date` and `time`.  Defaults are not allowed with `optional` or `list`
+modifiers.
 
 **Text** is a sequence of characters.
 ```muon
@@ -128,10 +128,10 @@ farewell: text Goodbye!
 farewell: Be seeing you.
 ```
 
-Because values cannot contain *line feeds*, text definitions must be
-**appended** to represent them.  This is done with a **text append** separator,
-which is `:>` instead of the usual `: ` between the key and value.  A *line
-feed* is inserted before each appended value.
+Because values cannot contain *line feeds*, they can only be represented using
+multiple definitions.  The text must be split into values between each line
+feed.  For each definition after the first, use a **text append** separator,
+which is `:>` instead of the usual `: ` before the value.
 
 When appending, use a **blank** key — a sequence of spaces with the same number
 of characters as the key.
