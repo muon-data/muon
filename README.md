@@ -1,4 +1,4 @@
-## MuON v1.0
+## MuON v1.1alpha
 
 *Micro Object Notation*
 <br/><sub><sub>&nbsp;&nbsp;&nbsp;&nbsp;by Douglas Lau</sub></sub>
@@ -101,9 +101,9 @@ movie: list record
 :::
 ```
 
-There are ten available **types**: `text`, `bool`, `int`, `number`, `datetime`,
-`date`, `time`, `record`, `dictionary` and `any`.  They are used to parse
-**objects** from *values*.
+There are eleven available **types**: `text`, `bool`, `int`, `number`,
+`datetime`, `date`, `time`, `record`, `choice`, `dictionary` and `any`.  They
+are used to parse **objects** from *values*.
 
 An `optional` or `list` **modifier** may precede the type, followed by a space.
 
@@ -250,6 +250,51 @@ player: Arthur
   health: 50
 nemesis: Mordred
   health: 60
+```
+
+A **choice** is a branch containing *variants* as subsequent definitions.  Also
+known as a *sum type*, a choice represents exactly one of the variants.
+
+A **variant** containing no data is declared as a definition with no type.
+These variants can substitute for the choice value.
+
+```muon
+:::
+pill: choice
+  red
+  blue
+:::
+pill: red
+```
+
+Variants can also contain arbitrary data.  These must be declared with a
+subsequent definition.
+
+```muon
+:::
+strategy: choice
+  attack: int
+  retreat
+  surrender: text
+:::
+strategy:
+  attack: 50
+```
+
+In the schema, a **variant id** can follow `choice` after a space.  This works
+in the same way as a record id.
+
+```muon
+:::
+face_a: choice direction
+  North
+  South
+  East
+  West
+face_b: choice direction
+:::
+face_a: North
+face_b: East
 ```
 
 A **dictionary** is a branch for associative arrays — useful if keys are not
