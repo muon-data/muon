@@ -159,15 +159,6 @@ earth_is_flat: false
   * *Hexadecimal*: `x` followed by sequence of digits `0`-`9`, `A`-`F` or
     `a`-`f`
 
-If no constraints are given, an integer has no bounds (*BigInt*).
-
-```muon
-:::
-points: int >=0 <=255
-:::
-points: 49
-```
-
 An underscore may be inserted between digits to improve readability.
 
 ```muon
@@ -177,6 +168,17 @@ ford: x0F
 jarrah: +16
 shephard: b01_0111
 kwon: x2a
+```
+
+If no constraints are given, an integer has no bounds (*BigInt*).
+
+```muon
+:::
+uint8: int >=0 <=255
+rank: int >0 <6
+:::
+uint8: 49
+rank: 3
 ```
 
 ---
