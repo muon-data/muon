@@ -6,18 +6,19 @@ MuON is a format for configuration files and data interchange.
 
 * Ease of reading and *writing*
   * Short specification
+  * Comments!
 * Simplicity
   * Regular syntax
   * No seldom-used escaping rules
-  * Only a few special characters: *line feed*, *space*, `"`, `#`, `:`, `:>`
-    and `:=`
-  * Smaller file size
-* Schema support
+  * Only a few special characters: *line feed*, *space*, `"`, `#` and `:`
+  * Smaller typical file size
+* First-class schema support
   * Common types supported
   * Constraints
   * Default values
   * Optional and list types
   * Choice values (sum types)
+  * _Any_ type for schemaless branches
 
 ### Comparision
 
