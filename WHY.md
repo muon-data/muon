@@ -9,13 +9,15 @@ MuON is a format for configuration files and data interchange.
 * Simplicity
   * Regular syntax
   * No seldom-used escaping rules
-  * Only 5 special characters (plus 2 digraphs): *line feed*, *space*, `"`, `#`,
-    `:`, `:>` and `:=`
+  * Only a few special characters: *line feed*, *space*, `"`, `#`, `:`, `:>`
+    and `:=`
   * Smaller file size
 * Schema support
-  * All common types supported
+  * Common types supported
+  * Constraints
   * Default values
   * Optional and list types
+  * Choice values (sum types)
 
 ### Comparision
 
