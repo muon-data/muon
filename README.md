@@ -161,6 +161,13 @@ earth_is_flat: false
 
 If no constraints are given, an integer has no bounds (*BigInt*).
 
+```muon
+:::
+points: int >=0 <=255
+:::
+points: 49
+```
+
 An underscore may be inserted between digits to improve readability.
 
 ```muon
